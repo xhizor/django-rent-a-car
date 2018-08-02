@@ -6,5 +6,5 @@ app_name = 'account'
 
 urlpatterns = [
     path('api/auth/token/', obtain_jwt_token, name='get_jwt'),
-    path('api/register/', CreateUserView.as_view(), name='create_user')
+    path('api/register/', CreateUserView.as_view(), name='register')
 ]

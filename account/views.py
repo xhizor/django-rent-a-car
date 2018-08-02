@@ -5,6 +5,9 @@ from .serializers import UserSerializer
 
 
 class CreateUserView(CreateAPIView):
+    """
+    Generic API View for creating a new user.
+    """
     model = UserProfile
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
