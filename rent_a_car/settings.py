@@ -55,7 +55,7 @@ ROOT_URLCONF = 'rent_a_car.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,7 +120,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
+STATICFILES_DIRS = (
+    'static',
+)
 
 # Django Debug Toolbar Configuration
 
@@ -162,3 +164,4 @@ REST_FRAMEWORK = {
 # Media files Configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+

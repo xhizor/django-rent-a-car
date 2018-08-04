@@ -1,11 +1,6 @@
 import pytest
-from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
-from rest_framework.test import APIClient
-
-from account.models import UserProfile
-from ..serializers import UserProfileSerializer, UserSerializer
 
 
 @pytest.fixture
@@ -17,18 +12,18 @@ def test_user(django_user_model):
 
 
 def test_jwt_200(test_user, client):
+    url = reverse('account:get_jwt')
     data = {'username': 'test_user',
             'password': 'test_pass'}
-    url = reverse('account:get_jwt')
     r = client.post(url, data=data, format='json')
     assert r.status_code == HTTP_200_OK
     assert r.data.get('token')
 
 
 def test_jwt_400(test_user, client):
+    url = reverse('account:get_jwt')
     data = {'username': 'test_user1',
             'password': 'test_pass1'}
-    url = reverse('account:get_jwt')
     r = client.post(url, data=data, format='json')
     assert r.status_code == HTTP_400_BAD_REQUEST
     assert not r.data.get('token')
@@ -82,3 +77,19 @@ def test_register_birth_date_field_validation_error(client):
     json_response_errors = r.json().get('user_profile')\
                                    .get('non_field_errors')
     assert json_response_errors
+
+
+#@pytest.mark.django_db
+#def test_home_200(test_user, client):
+    #url = reverse('home')
+    #payload = api_settings.JWT_PAYLOAD_HANDLER(test_user)
+    #token = api_settings.JWT_ENCODE_HANDLER(payload)
+    #client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+    #client.force_authenticate(user=test_user, token=token)
+    #r = client.get(url)
+    #assert r
+
+def test_home_200(test_user, client):
+    url = reverse('home')
+    r = client.get(url)
+    assert r.status_code == 200

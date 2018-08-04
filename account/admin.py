@@ -6,6 +6,8 @@ from .models import UserProfile
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'email', 'full_name', 'birth_date', 'address', 'date_joined')
     list_editable = ('address',)
+    search_fields = ('user__username', 'user__email', 'address',)
+    ordering = ('user__date_joined',)
 
     def email(self, obj):
         return obj.user.email
