@@ -1,8 +1,7 @@
+django-cors-headers
 django-debug-toolbar
 django-rest-framework
 djangorestframework-jwt
 pillow
 pytest-django
 python-decouple
-
-

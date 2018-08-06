@@ -7,16 +7,6 @@ from .models import UserProfile
 from .serializers import UserSerializer
 
 
-class CreateUserView(CreateAPIView):
-    """
-    API View for creating a new user (POST).
-    Return user instance with 201 CREATED status code.
-    """
-    model = UserProfile
-    serializer_class = UserSerializer
-    permission_classes = [AllowAny]
-
-
 class HomeView(APIView):
     """
     Home Page Template API View (GET).
@@ -29,5 +19,23 @@ class HomeView(APIView):
         return Response()
 
 
+class LoginView(APIView):
+    """
+    Login Page Template API View (GET, POST).
+    """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'account/login.html'
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response()
 
 
+class CreateUserView(CreateAPIView):
+    """
+    API View for creating a new user (POST).
+    Return user instance with 201 CREATED status code.
+    """
+    model = UserProfile
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]

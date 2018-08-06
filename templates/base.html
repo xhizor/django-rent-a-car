@@ -1,4 +1,4 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +6,7 @@
     <title>{% block title %} {% endblock title %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
 </head>
+<body id="login">
 <nav class="navbar is-light">
     <div class="navbar-brand">
         <a href="#" class="navbar-item">
@@ -49,7 +50,6 @@
         </div>
     </div>
 </nav>
-<body>
 
 {% block content %}
 
@@ -66,8 +66,10 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script>
-
+    // script for responsive menu
     document.addEventListener('DOMContentLoaded', function () {
 
         // Get all "navbar-burger" elements
@@ -94,9 +96,9 @@
     });
 </script>
 
+
 {% block script %}
 
 {% endblock script %}
-
 </body>
 </html>

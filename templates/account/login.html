@@ -1,1 +1,54 @@
 {% extends 'base.html' %}
+{% load staticfiles%}
+{% block title %} Login | Rent-a-car {% endblock title %}
+
+{% block content %}
+    <section class="section">
+    <h1 class="title is-4"> Welcome to Login page!</h1>
+    </section>
+    <section class="section is-large"></section>
+    <div class="modal is-active" id="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-content">
+                <div class="control">
+                     <div id="app">
+                        <label class="label">Username</label>
+                        <input class="input" type="text" autofocus="true" v-model="username">
+                        <br><br>
+                        <label class="label">Password</label>
+                        <input class="input" type="password" v-model="password"><br><br>
+                        <div class="columns">
+                            <div class="column is-5">
+                                <label class="checkbox">
+                                <input type="checkbox"> Remember me </label>
+                            </div>
+                            <div class="column">
+                                <a class="button is-small is-danger">Forgot your password?</a>
+                            </div>
+                            <div class="column">
+                                <a href="{% url 'account:register' %}" class="button is-small is-success">
+                                    You're new, Register here!
+                                </a>
+                            </div>
+                        </div>
+                     <br>
+                    <button class="button is-info" v-on:click="login"> Login </button>
+                         <div v-if="error">
+                         <br>
+                         <article class="message is-danger">
+                                <div class="message-body">
+                                     Your credentials are incorrect!
+                                </div>
+                             </article>
+                             </div></div></div></div></div>
+            <button class="modal-close is-medium" id="btn"></button>
+    </div>
+    <br>
+     </div>
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'account/js/login.js' %}"></script>
+{% endblock script %}
