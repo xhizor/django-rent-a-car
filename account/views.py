@@ -1,9 +1,12 @@
+from django.shortcuts import redirect
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from .models import UserProfile
+from .forms import UserForm
 from .serializers import UserSerializer
 
 
@@ -31,11 +34,28 @@ class LoginView(APIView):
         return Response()
 
 
-class CreateUserView(CreateAPIView):
+class CreateUserView(APIView):
     """
-    API View for creating a new user (POST).
-    Return user instance with 201 CREATED status code.
+    API View for creating a new user (GET, POST)
+    Redirect to Login View after successful registration.
     """
-    model = UserProfile
-    serializer_class = UserSerializer
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'account/register.html'
     permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({'form': UserForm})
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('account:login')
+        return Response({'form': UserForm}, status=HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+

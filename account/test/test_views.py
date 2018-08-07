@@ -1,6 +1,6 @@
 import pytest
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_302_FOUND
 
 
 @pytest.fixture
@@ -11,7 +11,7 @@ def test_user(django_user_model):
     return user
 
 
-def test_jwt_200(test_user, client):
+def test_valid_jwt_200(test_user, client):
     url = reverse('account:get_jwt')
     data = {'username': 'test_user',
             'password': 'test_pass'}
@@ -20,7 +20,7 @@ def test_jwt_200(test_user, client):
     assert r.data.get('token')
 
 
-def test_jwt_400(test_user, client):
+def test_invalid_jwt_400(test_user, client):
     url = reverse('account:get_jwt')
     data = {'username': 'test_user1',
             'password': 'test_pass1'}
@@ -30,7 +30,7 @@ def test_jwt_400(test_user, client):
 
 
 @pytest.mark.django_db
-def test_register_201(client):
+def test_valid_register_302(client):
     url = reverse('account:register')
     data = {'username': 'test_user',
             'email': 'test_email@email.com',
@@ -41,16 +41,22 @@ def test_register_201(client):
             'user_profile.birth_date': '1993-05-05',
             }
     r = client.post(url, data=data, format='json')
-    assert r.status_code == HTTP_201_CREATED
-    json_response_username = r.json().get('username')
-    assert json_response_username == 'test_user'
+    assert r.status_code == HTTP_302_FOUND
+
+
+def test_register_200(client):
+    url = reverse('account:register')
+    r = client.get(url)
+    assert r.status_code == HTTP_200_OK
+    assert 'csrfmiddlewaretoken' in str(r.content)
+    assert 'user_profile.photo' in str(r.content)
 
 
 @pytest.mark.django_db
-def test_register_400(client):
+def test_invalid_register_400(client):
     url = reverse('account:register')
     data = {'username': 'test_user',
-            'email': 'email.com',  # Invalid email address
+            'email': 'email@com',  # Invalid email address
             'password': 'test_pass',
             'first_name': 'test_first_name',
             'last_name': 'test_last_name',
@@ -62,21 +68,18 @@ def test_register_400(client):
 
 
 @pytest.mark.django_db
-def test_register_birth_date_field_validation_error(client):
+def test_birth_date_validation_error_400(client):
     url = reverse('account:register')
     data = {'username': 'test_user1',
-            'email': 'test_email@ema il.com',
+            'email': 'test_email@email.com',
             'password': 'test_pass',
             'first_name': 'test_first_name',
             'last_name': 'test_last_name',
             'user_profile.address': 'test_address',
-            'user_profile.birth_date': '2005-05-05',
+            'user_profile.birth_date': '2015-05-05',
     }
     r = client.post(url, data=data, format='json')
     assert r.status_code == HTTP_400_BAD_REQUEST
-    json_response_errors = r.json().get('user_profile')\
-                                   .get('non_field_errors')
-    assert json_response_errors
 
 
 #@pytest.mark.django_db

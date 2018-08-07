@@ -1,3 +1,4 @@
+django-bulma
 django-cors-headers
 django-debug-toolbar
 django-rest-framework
