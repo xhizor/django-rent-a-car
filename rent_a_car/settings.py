@@ -14,6 +14,8 @@ import os
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.urls import reverse_lazy
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -39,7 +41,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'rest_framework',
     'corsheaders',
-    'bulma'
+    'bulma',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware'
 ]
 
 ROOT_URLCONF = 'rent_a_car.urls'
@@ -66,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -151,6 +157,19 @@ if DEBUG:  # Use local only
 
     INTERNAL_IPS = ('127.0.0.1', 'localhost',)
 
+
+# Github Auth Configuration
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+LOGIN_REDIRECT_URL = 'account:dashboard'
+SOCIAL_AUTH_GITHUB_KEY = config('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = config('SOCIAL_AUTH_GITHUB_SECRET')
+
 # Django Rest Framework Configuration (JWT)
 
 REST_FRAMEWORK = {
@@ -184,6 +203,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'backlever95@gmail.com'
-EMAIL_HOST_PASSWORD = 'Dj@ngo39'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
