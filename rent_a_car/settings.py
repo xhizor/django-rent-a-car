@@ -181,11 +181,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'backlever95@gmail.com'
-EMAIL_HOST_PASSWORD = 'test'
+EMAIL_HOST_PASSWORD = 'Dj@ngo39'
 EMAIL_PORT = 587
-
-#https://stackoverflow.com/questions/48841036/how-to-send-password-reset-mail-from-custom-django-views?rq=1

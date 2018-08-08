@@ -21,6 +21,7 @@ from account.views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls', namespace='account')),  # Include account app urls
 ]

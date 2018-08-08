@@ -55,8 +55,7 @@ class CreateUserView(APIView):
 
 class DashboardView(APIView):
     """
-    API View for creating a new user (GET, POST)
-    Redirect to Login View after successful registration.
+    User Dashboard Page Template API View (GET).
     """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/dashboard.html'
@@ -64,6 +63,7 @@ class DashboardView(APIView):
 
     def get(self, request):
         return Response()
+
 
 
 

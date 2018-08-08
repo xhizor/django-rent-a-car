@@ -2,6 +2,7 @@ django-bulma
 django-cors-headers
 django-debug-toolbar
 django-rest-framework
+django-rest-passwordreset
 djangorestframework-jwt
 pillow
 pytest-django

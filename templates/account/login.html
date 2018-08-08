@@ -21,16 +21,12 @@
                         <label class="label">Password</label>
                         <input class="input" type="password" required id="password"><br><br>
                         <div class="columns">
-                            <div class="column is-5">
-                                <label class="checkbox">
-                                <input type="checkbox"> Remember me </label>
-                            </div>
-                            <div class="column">
-                                <a class="button is-small is-danger">Forgot your password?</a>
+                            <div class="column is-8">
+                                <a class="button is-small is-danger" href="{% url 'password_reset' %}">Forgot your password?</a>
                             </div>
                             <div class="column">
                                 <a href="{% url 'account:register' %}" class="button is-small is-success">
-                                    You're new, Register here!
+                                    You're new user, Register here!
                                 </a>
                             </div>
                         </div>
