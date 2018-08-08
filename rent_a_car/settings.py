@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'rent_a_car.urls'
@@ -164,8 +164,28 @@ REST_FRAMEWORK = {
     ),
 }
 
+from datetime import timedelta
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+}
+
+
 # Media files Configuration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# CORS configuration
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'backlever95@gmail.com'
+EMAIL_HOST_PASSWORD = 'test'
+EMAIL_PORT = 587
+
+#https://stackoverflow.com/questions/48841036/how-to-send-password-reset-mail-from-custom-django-views?rq=1

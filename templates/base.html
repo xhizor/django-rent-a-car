@@ -23,43 +23,22 @@
         <div class="navbar-start">
         </div>
         <div class="navbar-end">
-            {% if not user.is_authenticated %}
-                <a href="" class="navbar-item"> Home </a>
-            {% else %}
-                <a href="" class="navbar-item"> Dashboard </a>
-            {% endif %}
-            <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-             <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link" style="background: rgb(245, 245, 245);"> View Cars </a>
-             <div class="navbar-dropdown">
-              <a class="navbar-item"> Audi </a>
-              <a class="navbar-item"> BMW </a>
-              <a class="navbar-item"> Mercedes </a>
-                 <a class="navbar-item"> Opel </a>
-                 <a class="navbar-item"> Škoda </a>
-                 <hr class="navbar-divider">
-             </div>
-             </div>
-            </nav>
-                <a href="" class="navbar-item"> News </a>
-            {% if not user.is_authenticated %}
-                <a href="" class="navbar-item"> Login </a>
-                <a href="" class="navbar-item"> Register </a>
-            {% else %}
-                <a href="" class="navbar-item"> Logout </a>
-            {% endif %}
+        {% block menu %}
+            {% include "account/menu/home.html" %}
+        {% endblock menu %}
         </div>
     </div>
 </nav>
 
 {% block content %}
 
+
 {% endblock content %}
 
 <footer class="footer" style="background: powderblue;">
     <div class="container">
         <div class="content has-text-centered">
-            <p><i>Rent-a-car. Created by Mateo Mlikota, 2018</i></p><br>
+            <p><i>Rent-a-car. Created by Mateo Mlikota 2018 &copy; </i></p><br>
          </div>
     </div>
 </footer>
@@ -96,7 +75,6 @@
 
     });
 </script>
-
 
 {% block script %}
 

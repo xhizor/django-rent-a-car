@@ -1,11 +1,9 @@
 from django.shortcuts import redirect
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from .models import UserProfile
 from .forms import UserForm
 from .serializers import UserSerializer
 
@@ -15,8 +13,8 @@ class HomeView(APIView):
     Home Page Template API View (GET).
     """
     renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'base.html'
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    template_name = 'account/home.html'
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         return Response()
@@ -24,7 +22,7 @@ class HomeView(APIView):
 
 class LoginView(APIView):
     """
-    Login Page Template API View (GET, POST).
+    Login Page Template API View (GET).
     """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/login.html'
@@ -51,11 +49,21 @@ class CreateUserView(APIView):
         if serializer.is_valid():
             serializer.save()
             return redirect('account:login')
-        return Response({'form': UserForm}, status=HTTP_400_BAD_REQUEST)
+        return Response({'form': UserForm, 'error': True},
+                        status=HTTP_400_BAD_REQUEST)
 
 
+class DashboardView(APIView):
+    """
+    API View for creating a new user (GET, POST)
+    Redirect to Login View after successful registration.
+    """
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'account/dashboard.html'
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
-
+    def get(self, request):
+        return Response()
 
 
 

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load staticfiles%}
 {% load bulma_tags %}
-{% block title %} Register | Rent-a-car{% endblock title %}
+{% block title %} Register | Rent-a-car {% endblock title %}
 
 {% block content %}
     <section class="section">
@@ -12,6 +13,7 @@
         <div class="modal-content">
             <div class="card">
                 <div class="card-content">
+                    <a href="{% url 'account:login' %}" class="button is-link">Back</a><br><br>
                 <div class="control">
                     <form action="{%  url 'account:register' %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -45,29 +47,15 @@
                         <input type="submit" class="button is-success" value="Register">
                     </form>
                     <button class="modal-close is-medium" id="btn"></button>
+                     <br>
                 </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+     <br>
+{% endblock content %}
 
 {% block script %}
-<script>
-    $(function(){
-    $("#btn").click(function(){
-            $("#modal").fadeOut("slow");
-        });
-
-        $(document).keyup(function(e){
-            if (e.which === 27)
-                $("#btn").click();
-        });
-
-        $("a.delete").click(function(){
-            $("article").fadeOut("slow");
-        });
-
-});
-</script>
+    <script src="{% static 'account/js/modal.js' %}"></script>
 {% endblock script %}
