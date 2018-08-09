@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -63,6 +64,20 @@ class DashboardView(APIView):
 
     def get(self, request):
         return Response()
+
+
+class LogoutView(APIView):
+    """
+    Logout View for Github Auth User.
+    """
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        logout(request)
+        return redirect('home')
+
+
+
 
 
 

@@ -82,6 +82,12 @@ def test_birth_date_validation_error_400(client):
     assert r.status_code == HTTP_400_BAD_REQUEST
 
 
+@pytest.mark.django_db
+def test_logout(test_user, client):
+    url = reverse('account:logout')
+    r = client.get(url)
+    assert r.status_code == HTTP_302_FOUND
+
 #@pytest.mark.django_db
 #def test_home_200(test_user, client):
     #url = reverse('home')
