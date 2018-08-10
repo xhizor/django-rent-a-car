@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles%}
 {% load bulma_tags %}
-{% block title %} Register | Rent-a-car {% endblock title %}
+{% block title %} Register — Rent-a-car {% endblock title %}
 
 {% block content %}
-    <section class="section">
-    <h1 class="title is-4"> Welcome to Register page!</h1>
-    </section>
     <section class="section is-large"></section>
+    <section class="section is-medium"></section>
     <div class="modal is-active" id="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -15,7 +13,7 @@
                 <div class="card-content">
                     <a href="{% url 'account:login' %}" class="button is-link">Back</a><br><br>
                 <div class="control">
-                    <form action="{%  url 'account:register' %}" method="POST" enctype="multipart/form-data">
+                    <form action="{%  url 'account:register' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
                         {% csrf_token %}
                         {{ form | bulma}}
                         <div class="field">
@@ -53,7 +51,6 @@
             </div>
         </div>
     </div>
-     <br>
 {% endblock content %}
 
 {% block script %}

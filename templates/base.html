@@ -6,6 +6,13 @@
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock title %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+    <style>
+        body{
+            background: rgb(250, 250, 250);
+        }
+    </style>
+    {% block css %}
+    {% endblock css %}
 </head>
 <body id="login">
 <nav class="navbar is-light">
@@ -37,7 +44,7 @@
 <footer class="footer" style="background: powderblue;">
     <div class="container">
         <div class="content has-text-centered">
-            <p><i>Rent-a-car. Created by Mateo Mlikota 2018 &copy; </i></p><br>
+            <p><i>&copy; 2018 Rent-a-car — Coded by Mateo Mlikota.</i></p><br>
          </div>
     </div>
 </footer>
@@ -47,6 +54,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+<script src="{% static 'account/js/dashboard.js' %}"></script>
+<script src="{% static 'account/js/change_profile.js' %}"></script>
+<script src="{% static 'account/js/logout.js' %}"></script>
 <script>
     // script for responsive menu
     document.addEventListener('DOMContentLoaded', function () {

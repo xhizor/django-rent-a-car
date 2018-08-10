@@ -1,5 +1,8 @@
-from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import logout
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -50,8 +53,7 @@ class CreateUserView(APIView):
         if serializer.is_valid():
             serializer.save()
             return redirect('account:login')
-        return Response({'form': UserForm, 'error': True},
-                        status=HTTP_400_BAD_REQUEST)
+        return Response({'form': UserForm}, status=HTTP_400_BAD_REQUEST)
 
 
 class DashboardView(APIView):
@@ -60,10 +62,17 @@ class DashboardView(APIView):
     """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/dashboard.html'
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (AllowAny,)
 
     def get(self, request):
-        return Response()
+        return Response({'form': UserForm})
+
+    def put(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('home')
+        return Response({'form': UserForm}, status=HTTP_400_BAD_REQUEST)
 
 
 class LogoutView(APIView):

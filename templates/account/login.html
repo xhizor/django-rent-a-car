@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %} Login | Rent-a-car {% endblock title %}
+{% block title %} Login — Rent-a-car {% endblock title %}
 {% block menu %}
     {% include "account/menu/home.html" %}
 {% endblock menu %}
 {% block content %}
-    <section class="section">
-    <h1 class="title is-4"> Welcome to Login page!</h1>
-    </section>
     <section class="section is-large"></section>
+    <section class="section is-medium"></section>
     <div class="modal is-active" id="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -16,10 +14,10 @@
                 <div class="card-content">
                 <div class="control">
                         <label class="label">Username</label>
-                        <input class="input" type="text" autofocus="true" required id="username">
+                        <input class="input" type="text" autofocus="true" required id="username" autocomplete="off">
                         <br><br>
                         <label class="label">Password</label>
-                        <input class="input" type="password" required id="password"><br><br>
+                        <input class="input" type="password" required id="password" autocomplete="off"><br><br>
                         <div class="columns">
                             <div class="column">
                                  <a href="{% url 'social:begin' 'github' %}" class="button is-small">
@@ -34,12 +32,12 @@
                             </div>
                             <div class="column">
                                 <a href="{% url 'account:register' %}" class="button is-small is-success">
-                                    You're new user, Register here!
+                                    You're new user, register here!
                                 </a>
                             </div>
                         </div>
                      <br>
-                    <button class="button is-info" id="btnLogin"> Login </button>
+                    <button class="button is-link" id="btnLogin"> Login </button>
                          <br><br>
                          <article class="message is-danger" style="display:none;" id="errorMessage">
                                 <div class="message-body">
