@@ -1,15 +1,20 @@
+import json
+import profile
+
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import logout
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
+from django.views.generic import UpdateView
+from rest_framework import viewsets
+from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
+from .models import UserProfile
 from .forms import UserForm
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
 
 
 class HomeView(APIView):
@@ -62,24 +67,43 @@ class DashboardView(APIView):
     """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/dashboard.html'
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
         return Response({'form': UserForm})
 
-    def put(self, request):
-        serializer = UserSerializer(data=request.data)
+
+class UserProfileUpdateView(APIView):
+    def patch(self, request):
+        serializer = UserSerializer(instance=request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return redirect('home')
+            return Response(status=HTTP_200_OK)
         return Response({'form': UserForm}, status=HTTP_400_BAD_REQUEST)
+
+
+class AuthUserView(APIView):
+    serializer_class = UserSerializer
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+
+class AuthUserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return self.queryset.filter(user=self.request.user)
+        return self.queryset
 
 
 class LogoutView(APIView):
     """
     Logout View for Github Auth User.
     """
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         logout(request)

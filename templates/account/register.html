@@ -13,7 +13,7 @@
                 <div class="card-content">
                     <a href="{% url 'account:login' %}" class="button is-link">Back</a><br><br>
                 <div class="control">
-                    <form action="{%  url 'account:register' %}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <form action="." method="POST" enctype="multipart/form-data" autocomplete="off">
                         {% csrf_token %}
                         {{ form | bulma}}
                         <div class="field">

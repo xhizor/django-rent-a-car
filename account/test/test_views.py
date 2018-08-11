@@ -1,31 +1,32 @@
 import pytest
 from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
-from rest_framework.settings import api_settings
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_302_FOUND
+from rest_framework.test import APIClient
+from ..models import UserProfile
+
+# Test credentials
+username = 'test_user'
+password = 'test_pass'
 
 
-@pytest.fixture
-def test_user(django_user_model):
-    user = django_user_model.objects.create_user(username='test_user',
-                                                 email='test@test.com',
-                                                 password='test_pass')
-    return user
-
-
-def test_valid_jwt(test_user, client):
+def test_valid_jwt(django_user_model, client):
+    django_user_model.objects.create_user(username=username,
+                                          password=password)
     url = reverse('account:get_jwt')
-    data = {'username': 'test_user',
-            'password': 'test_pass'}
+    data = {'username': username,
+            'password': password}
     r = client.post(url, data=data, format='json')
     assert r.status_code == HTTP_200_OK
     assert r.data.get('token')
 
 
-def test_invalid_jwt(test_user, client):
+def test_invalid_jwt(django_user_model, client):
+    django_user_model.objects.create_user(username=username,
+                                          password=password)
     url = reverse('account:get_jwt')
-    data = {'username': 'test_user1',
-            'password': 'test_pass1'}
+    data = {'username': username + '1',  # Invalid username
+            'password': password}
     r = client.post(url, data=data, format='json')
     assert r.status_code == HTTP_400_BAD_REQUEST
     assert not r.data.get('token')
@@ -42,9 +43,9 @@ def test_register_get(client):
 @pytest.mark.django_db
 def test_valid_register(client):
     url = reverse('account:register')
-    data = {'username': 'test_user',
+    data = {'username': username,
+            'password': password,
             'email': 'test_email@email.com',
-            'password': 'test_pass',
             'first_name': 'test_first_name',
             'last_name': 'test_last_name',
             'user_profile.address': 'test_address',
@@ -57,9 +58,9 @@ def test_valid_register(client):
 @pytest.mark.django_db
 def test_invalid_register(client):
     url = reverse('account:register')
-    data = {'username': 'test_user',
-            'email': 'email@com',  # Invalid email address
-            'password': 'test_pass',
+    data = {'username': username,
+            'password': password,
+            'email': 'email@com',  # Invalid email format
             'first_name': 'test_first_name',
             'last_name': 'test_last_name',
             'user_profile.address': 'test_address',
@@ -72,9 +73,9 @@ def test_invalid_register(client):
 @pytest.mark.django_db
 def test_birth_date_validation_error(client):
     url = reverse('account:register')
-    data = {'username': 'test_user1',
+    data = {'username': username,
+            'password': password,
             'email': 'test_email@email.com',
-            'password': 'test_pass',
             'first_name': 'test_first_name',
             'last_name': 'test_last_name',
             'user_profile.address': 'test_address',
@@ -85,22 +86,51 @@ def test_birth_date_validation_error(client):
 
 
 @pytest.mark.django_db
-def test_logout(client):
+def test_logout(django_user_model, client):
+    django_user_model.objects.create_user(username=username,
+                                          password=password)
+    client.login(username=username, password=password)
+
     url = reverse('account:logout')
     r = client.get(url)
+    client.logout()
     assert r.status_code == HTTP_302_FOUND
 
-#@pytest.mark.django_db
-#def test_home_200(test_user, client):
-    #url = reverse('home')
-    #payload = api_settings.JWT_PAYLOAD_HANDLER(test_user)
-    #token = api_settings.JWT_ENCODE_HANDLER(payload)
-    #client.credentials(HTTP_AUTHORIZATION='Token ' + token)
-    #client.force_authenticate(user=test_user, token=token)
-    #r = client.get(url)
-    #assert r
 
-def test_home_get(test_user, client):
+def test_home_get(client):
     url = reverse('home')
     r = client.get(url)
-    assert r.status_code == 200
+    assert r.status_code == HTTP_200_OK
+
+
+def test_dashboard(client):
+    url = reverse('account:dashboard')
+    r = client.get(url)
+    assert r.status_code == HTTP_200_OK
+
+
+def test_auth_user(django_user_model):
+    user = django_user_model.objects.create_user(username=username,
+                                                 password=password)
+    token = Token.objects.create(user=user)
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+    url = reverse('account:auth_user')
+    r = client.get(url)
+    assert r.status_code == HTTP_200_OK
+    assert r.json().get('username') == 'test_user'
+
+
+def test_auth_user_profile(django_user_model):
+    user = django_user_model.objects.create_user(username=username,
+                                                 password=password)
+    UserProfile.objects.create(user=user, birth_date='1995-05-05')
+    token = Token.objects.create(user=user)
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+    url = reverse('account:auth_user_profile')
+    r = client.get(url)
+    assert r.status_code == HTTP_200_OK
+    assert r.json()[0].get('birth_date') == '1995-05-05'
+
+
