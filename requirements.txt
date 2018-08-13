@@ -7,3 +7,5 @@ pillow
 pytest-django
 python-decouple
 social-auth-app-django
+django-extensions
+werkzeug

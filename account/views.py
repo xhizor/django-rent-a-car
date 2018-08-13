@@ -1,12 +1,6 @@
-import json
-import profile
-
-from django.contrib.auth.models import User
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.contrib.auth import logout
-from django.views.generic import UpdateView
 from rest_framework import viewsets
-from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response

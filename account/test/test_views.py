@@ -6,13 +6,18 @@ from rest_framework.test import APIClient
 from ..models import UserProfile
 
 # Test credentials
+
 username = 'test_user'
 password = 'test_pass'
 
 
-def test_valid_jwt(django_user_model, client):
-    django_user_model.objects.create_user(username=username,
-                                          password=password)
+@pytest.fixture
+def test_user(django_user_model):
+    return django_user_model.objects.create_user(username=username,
+                                                 password=password)
+
+
+def test_valid_jwt(test_user, client):
     url = reverse('account:get_jwt')
     data = {'username': username,
             'password': password}
@@ -21,9 +26,7 @@ def test_valid_jwt(django_user_model, client):
     assert r.data.get('token')
 
 
-def test_invalid_jwt(django_user_model, client):
-    django_user_model.objects.create_user(username=username,
-                                          password=password)
+def test_invalid_jwt(test_user, client):
     url = reverse('account:get_jwt')
     data = {'username': username + '1',  # Invalid username
             'password': password}
@@ -86,11 +89,8 @@ def test_birth_date_validation_error(client):
 
 
 @pytest.mark.django_db
-def test_logout(django_user_model, client):
-    django_user_model.objects.create_user(username=username,
-                                          password=password)
+def test_logout(test_user, client):
     client.login(username=username, password=password)
-
     url = reverse('account:logout')
     r = client.get(url)
     client.logout()
@@ -109,10 +109,8 @@ def test_dashboard(client):
     assert r.status_code == HTTP_200_OK
 
 
-def test_auth_user(django_user_model):
-    user = django_user_model.objects.create_user(username=username,
-                                                 password=password)
-    token = Token.objects.create(user=user)
+def test_auth_user(test_user):
+    token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
     url = reverse('account:auth_user')
@@ -121,11 +119,9 @@ def test_auth_user(django_user_model):
     assert r.json().get('username') == 'test_user'
 
 
-def test_auth_user_profile(django_user_model):
-    user = django_user_model.objects.create_user(username=username,
-                                                 password=password)
-    UserProfile.objects.create(user=user, birth_date='1995-05-05')
-    token = Token.objects.create(user=user)
+def test_auth_user_profile(test_user, django_user_model):
+    UserProfile.objects.create(user=test_user, birth_date='1995-05-05')
+    token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
     url = reverse('account:auth_user_profile')

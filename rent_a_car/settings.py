@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'bulma',
-    'social_django'
+    'social_django',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
