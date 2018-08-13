@@ -1,0 +1,85 @@
+{% extends "account/base.html" %}
+{% load staticfiles %}
+{% load bulma_tags %}
+{% block title %} Dashboard — Rent-a-car {% endblock title %}
+{% block menu %}
+    {% include "account/menu/user.html" %}
+{% endblock menu %}
+{% block content %}
+    <div style="margin: 3%;">
+<div class="columns">
+<div class="column is-3">
+<aside class="menu">
+  <ul class="menu-list">
+    <li class="menu_dashboard"><a href="#" {% if 'dashboard' in request.path %} class="is-active" {% endif %}>Dashboard</a></li>
+  </ul>
+    <ul class="menu-list">
+        <li><a>Car reviews</a></li>
+    </ul>
+    <ul class="menu-list">
+    <li>
+      <a {% if 'orders' in request.path %} class="is-active" {% endif %}>Orders</a>
+      <ul>
+        <li><a>Active</a></li>
+        <li><a>Finished</a></li>
+      </ul>
+    </li>
+  </ul>
+      <ul class="menu-list">
+     <li>
+      <a {% if 'tickets' in request.path %} class="is-active" {% endif %}>Tickets</a>
+      <ul class="menu-list">
+        <li><a>Open</a></li>
+        <li><a>Closed</a></li>
+  </ul>
+  </li>
+      </ul>
+</aside>
+</div>
+<div class="column is-2"></div>
+<div class="column is-3">
+    <a class="fillForm"><span class="tag is-link">Update your profile</span></a><br><br>
+    <div class="box" style="display:none;">
+        <form>
+            {{ form | bulma }}
+            <div class="field">
+        <label class="label">Birthdate</label>
+        <div class="control">
+        <input type="date" id="birth_date"  class="input">
+        </div>
+            </div>
+    <div class="field">
+    <label class="label">Address</label>
+        <div class="control">
+        <input type="text" id="address" class="input">
+        </div>
+    </div>
+            <label class="label">Photo</label>
+            <img src="" class="photo" height="85" width="85"><br><br>
+    <div class="file">
+      <label class="file-label">
+        <input class="file-input" type="file">
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label">
+            Choose a photo…
+          </span>
+        </span>
+      </label>
+    </div>
+    <br>
+        <a id="update" class="button is-success">
+            <span class="icon is-small">
+              <i class="fas fa-check"></i>
+            </span>
+            <span>Save changes</span>
+        </a>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+

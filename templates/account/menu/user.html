@@ -1,0 +1,21 @@
+<a href="#" class="navbar-item {% if 'dashboard' in request.path %} is-active {% endif %}" id="dashboard"> Dashboard </a>
+     <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+     <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" style="background: rgb(245, 245, 245);"> View Cars </a>
+     <div class="navbar-dropdown">
+      <a class="navbar-item"> Audi </a>
+      <a class="navbar-item"> BMW </a>
+      <a class="navbar-item"> Mercedes </a>
+         <a class="navbar-item"> Opel </a>
+         <a class="navbar-item"> Škoda </a>
+         <hr class="navbar-divider">
+     </div>
+     </div>
+    </nav>
+    <a href="#" class="navbar-item"> News </a>
+    <a href="#" class="navbar-item"> Contact </a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'account:logout' %}" class="navbar-item"> Logout </a>
+    {% else %}
+        <a href="#" class="navbar-item" id="logout"> Logout </a>
+    {% endif %}
