@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'bulma',
     'social_django',
-    'django_extensions'
+    'django_extensions',
+    'car.apps.CarConfig',
 ]
 
 MIDDLEWARE = [
