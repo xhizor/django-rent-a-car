@@ -62,14 +62,14 @@ class Car(models.Model):
                f'${self.price_hourly} - ' + 'Available' if self.available else 'Unavailable'
 
 
-class Galery(models.Model):
+class Gallery(models.Model):
     photo = models.ImageField(upload_to='cars/%Y/%m/%d')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='photos')
 
     class Meta:
-        db_table = 'galery'
+        db_table = 'gallery'
 
     def __str__(self):
-        return self.car
+        return self.car.name
 
 

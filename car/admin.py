@@ -40,8 +40,8 @@ class CarAdmin(admin.ModelAdmin):
         return obj.engine
 
 
-@admin.register(models.Galery)
-class GaleryAdmin(admin.ModelAdmin):
+@admin.register(models.Gallery)
+class GalleryAdmin(admin.ModelAdmin):
     list_display = ('photo', 'car')
 
     def car(self, obj):

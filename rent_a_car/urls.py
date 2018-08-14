@@ -25,6 +25,7 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls', namespace='account')),  # Include account app urls
+    path('car/', include('car.urls', namespace='car')),
 ]
 
 if settings.DEBUG:  # Use local only
