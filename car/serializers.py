@@ -6,7 +6,7 @@ class CarSerializer(ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
-        depth = 1
+        depth = 2
 
 
 class GallerySerializer(ModelSerializer):

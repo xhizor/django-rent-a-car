@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} View Cars — Rent-a-car {% endblock title %}
+{% block menu %}
+    {% include 'menu/user.html' %}
+{% endblock menu %}
+{% block content %}
+    <section class="section is-small">
+        <a id="view_cars" href="#" style="margin-left:20%"><span class="tag is-link">View all cars</span></a>
+    </section>
+    <section id="car_list" class="section is-small" style="display:none;">
+    <div class="box" style="width: 60%; margin-left: 20%;">
+    <div class="columns">
+    <div class="column">
+            <div class="field has-addons">
+    <p class="control">
+        <span class="select">
+        <select>
+          <option>-- Brand --</option>
+          <option>Audi</option>
+          <option>BMW</option>
+          <option>Mercedes</option>
+          <option>Opel</option>
+          <option>Škoda</option>
+        </select>
+        </span>
+  </p>
+  <p class="control">
+    <span class="select">
+      <select>
+          <option>-- Model year --</option>
+          <option>< 2000</option>
+          <option>2000 - 2005</option>
+          <option>2006 - 2010</option>
+          <option>2010 - 2015</option>
+          <option>2016+</option>
+      </select>
+    </span>
+  </p>
+ <p class="control">
+  <input type="number" class="input" min="30" max="300" placeholder="Price from">
+</p>
+<p class="control">
+  <input type="number" class="input" min="30" max="300" placeholder="Price to">
+</p>
+  <p class="control is-expanded">
+    <input class="input" type="text"
+           placeholder="Enter the name of the car (e.g. Audi A4)">
+  </p>
+  <p class="control">
+    <a class="button is-primary"> Search </a>
+  </p>
+</div>
+    </div>
+    </div>
+        <div class="columns">
+    <div class="column is-2">
+        <label class="checkbox">
+        <input type="checkbox"> 5+ photos</label>
+    </div>
+        <div class="column is-2">
+            <label class="checkbox">
+        <input type="checkbox"> 5 star </label>
+            </div>
+            <div class="column">
+                <div class="control">
+              <label class="radio"><input type="radio" name="radio">Diesel</label>
+              <label class="radio"><input type="radio" name="radio">Petrol</label>
+              <label class="radio"><input type="radio" name="radio">Gas</label>
+            </div>
+            </div>
+        </div>
+    </div>
+    </section>
+            <div class="cars">
+            </div>
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} View Car Info — Rent-a-car {% endblock title %}
+{% block menu %}
+    {% include 'menu/user.html' %}
+{% endblock menu %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'car/css/slider.css' %}">
+{% endblock css %}
+
+{% block content %}
+<section class="section">
+    <a id="get_car_info" href="#" style="margin-left:20%"><span class="tag is-link">Get car info</span></a>
+</section>
+    <section class="section" style="margin-left:38%;">
+    <div class="columns">
+        <div class="column is-5">
+    <div class="card" style="display:none;">
+  <div class="card-content">
+    <p class="title">
+    </p>
+    <p class="subtitle">
+    </p>
+  </div>
+  <footer class="card-footer">
+    <p class="card-footer-item" style="background: rgb(153, 255, 153);">
+      <span>
+        <a href="http://google.hr/" onclick="return confirm('Are you sure?');">Rent a car</a>
+      </span>
+    </p>
+  </footer>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+    <div class="gallery"></div>
+</section>
+    {% block script %}
+        <script src="{% static 'car/js/image_slider.js' %}"></script>
+    {% endblock script %}
+{% endblock content %}

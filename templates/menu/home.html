@@ -1,6 +1,6 @@
  <a href="{% url 'home' %}" class="navbar-item {% if request.path == '/' %} is-active {% endif %}"> Home </a>     <nav class="navbar" role="navigation" aria-label="dropdown navigation">
      <div class="navbar-item has-dropdown is-hoverable {% if 'cars' in request.path %} is-active {% endif %}">
-        <a class="navbar-link" style="background: rgb(245, 245, 245);"> View Cars </a>
+        <a href="{% url 'car:view_cars' %}"  class="navbar-link" style="background: rgb(245, 245, 245);"> View Cars </a>
      <div class="navbar-dropdown">
       <a class="navbar-item"> Audi </a>
       <a class="navbar-item"> BMW </a>
