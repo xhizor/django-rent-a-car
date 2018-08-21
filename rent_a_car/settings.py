@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'bulma',
     'social_django',
     'django_extensions',
+    'django_filters',
     'car.apps.CarConfig',
 ]
 
@@ -173,7 +174,7 @@ LOGIN_REDIRECT_URL = 'account:dashboard'
 SOCIAL_AUTH_GITHUB_KEY = config('SOCIAL_AUTH_GITHUB_KEY')
 SOCIAL_AUTH_GITHUB_SECRET = config('SOCIAL_AUTH_GITHUB_SECRET')
 
-# Django Rest Framework Configuration (JWT)
+# Django Rest Framework Configuration
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -184,6 +185,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
 
 

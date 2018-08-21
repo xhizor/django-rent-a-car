@@ -47,7 +47,7 @@ class AditionalEquipment(models.Model):
 class Car(models.Model):
     name = models.CharField(max_length=20)
     model_year = models.IntegerField()
-    price_hourly = models.FloatField()
+    price_hourly = models.IntegerField()
     available = models.BooleanField(default=True)
     rate = models.FloatField(default=0)
     model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='cars')
@@ -56,6 +56,7 @@ class Car(models.Model):
 
     class Meta:
         db_table = 'car'
+        ordering = ('model',)
 
     def __str__(self):
         return f'{self.model.name} {self.name} | {self.engine.name} - {self.model_year} | ' \

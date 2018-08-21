@@ -1,11 +1,11 @@
 django-bulma
 django-cors-headers
 django-debug-toolbar
+django-extensions
+django-filter
 django-rest-framework
-djangorestframework-jwt
 pillow
 pytest-django
 python-decouple
 social-auth-app-django
-django-extensions
 werkzeug

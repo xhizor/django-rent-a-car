@@ -1,16 +1,5 @@
- <a href="{% url 'home' %}" class="navbar-item {% if request.path == '/' %} is-active {% endif %}"> Home </a>     <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-     <div class="navbar-item has-dropdown is-hoverable {% if 'cars' in request.path %} is-active {% endif %}">
-        <a href="{% url 'car:view_cars' %}"  class="navbar-link" style="background: rgb(245, 245, 245);"> View Cars </a>
-     <div class="navbar-dropdown">
-      <a class="navbar-item"> Audi </a>
-      <a class="navbar-item"> BMW </a>
-      <a class="navbar-item"> Mercedes </a>
-         <a class="navbar-item"> Opel </a>
-         <a class="navbar-item"> Škoda </a>
-         <hr class="navbar-divider">
-     </div>
-     </div>
-    </nav>
-     <a href="{% url 'account:login' %}" class="navbar-item {% if 'login' in request.path %} is-active {% endif %}"> Login </a>
-    <a href="{% url 'account:register' %}" class="navbar-item {% if 'register' in request.path %} is-active {% endif %}"> Register </a>
-    <a href="#" class="navbar-item {% if 'contact' in request.path %} is-active {% endif %}"> Contact </a>
+<a href="{% url 'home' %}" class="navbar-item {% if request.path == '/' %} is-active {% endif %}"> Home </a>
+<a href="{% url 'car:view_cars' %}"  class="navbar-item {% if 'car' in request.path %} is-active {% endif %}"> View Cars </a>
+<a href="{% url 'account:login' %}" class="navbar-item {% if 'login' in request.path %} is-active {% endif %}"> Login </a>
+<a href="{% url 'account:register' %}" class="navbar-item {% if 'register' in request.path %} is-active {% endif %}"> Register </a>
+<a href="#" class="navbar-item {% if 'contact' in request.path %} is-active {% endif %}"> Contact </a>
