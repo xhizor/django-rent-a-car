@@ -24,8 +24,9 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls', namespace='account')),  # Include account app urls
+    path('account/', include('account.urls', namespace='account')),
     path('car/', include('car.urls', namespace='car')),
+    path('order/', include('order.urls', namespace='order')),
 ]
 
 if settings.DEBUG:  # Use local only
