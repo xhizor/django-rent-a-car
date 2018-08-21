@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'car.apps.CarConfig',
+    'order.apps.OrderConfig',
 ]
 
 MIDDLEWARE = [
