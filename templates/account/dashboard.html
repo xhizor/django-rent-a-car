@@ -3,7 +3,7 @@
 {% load bulma_tags %}
 {% block title %} Dashboard — Rent-a-car {% endblock title %}
 {% block menu %}
-    {% include "account/menu/user.html" %}
+    {% include "menu/user.html" %}
 {% endblock menu %}
 {% block content %}
     <div style="margin: 3%;">
@@ -11,7 +11,8 @@
 <div class="column is-3">
 <aside class="menu">
   <ul class="menu-list">
-    <li class="menu_dashboard"><a href="#" {% if 'dashboard' in request.path %} class="is-active" {% endif %}>Dashboard</a></li>
+    <li class="menu_dashboard"><a href="#" {% if 'dashboard' in request.path %}
+                                  class="is-active" {% endif %}>Dashboard</a></li>
   </ul>
     <ul class="menu-list">
         <li><a>Car reviews</a></li>
@@ -80,6 +81,6 @@
     </div>
     </div>
 </div>
-</div>
+</div><div style="margin-top: 17%"></div>
 {% endblock content %}
 

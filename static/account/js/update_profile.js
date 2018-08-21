@@ -1,4 +1,9 @@
-$("#update").click(function(){
+$('input[type="text"], input[type="password"]').keyup(function (e) {
+    if (e.keyCode === 13)
+         $('#update').click();
+});
+
+$('#update').click(function(){
     const data = {
         'username': $('#id_username').val(),
         'email': $('#id_email').val(),

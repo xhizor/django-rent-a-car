@@ -1,8 +1,5 @@
 $('#dashboard, .menu_dashboard a').click(function(){
-    axios.defaults.headers.common['Authorization'] = 'Token ' + localStorage.getItem('token');
-    axios
-        .get('http://localhost:8000/account/dashboard/')
-        .then(r => r.data);
+    window.location.href = 'http://localhost:8000/account/dashboard/'
 });
 
 
