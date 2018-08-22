@@ -4,7 +4,7 @@ from car.models import Car
 
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=5)
+    code = models.CharField(max_length=5, blank=True)
     discount = models.IntegerField()
     expired = models.DateTimeField()
     
@@ -12,7 +12,12 @@ class Coupon(models.Model):
         db_table = 'coupon'
 
     def __str__(self):
-        return f'{self.code} expired on {self.expired} - {self.discount}%' 
+        return f'{self.code} expired on {self.expired} - {self.discount}%'
+
+    def save(self, *args, **kwargs):
+        from django.utils.crypto import get_random_string
+        self.code = get_random_string(5)
+        super(Coupon, self).save(*args, **kwargs)
 
 
 class Order(models.Model):
@@ -25,8 +30,6 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='orders')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='orders')
-    coupon = models.ForeignKey(Coupon, null=True, blank=True,
-                               on_delete=models.SET_NULL, related_name='orders')
 
     class Meta:
         db_table = 'order'

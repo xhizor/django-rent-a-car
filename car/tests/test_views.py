@@ -1,7 +1,9 @@
+import pytest
 from django.urls import reverse
 from rest_framework.status import HTTP_200_OK
 
 
+@pytest.mark.django_db
 def test_view_cars_get(client):
     url = reverse('car:view_cars')
     r = client.get(url)

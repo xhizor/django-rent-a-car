@@ -16,27 +16,54 @@ $('#end_date').blur(function () {
     $('#total_price').text((!total_price || total_price === undefined) ? price_per_hour : total_price);
 });
 
-$('#proceed_order').click(function () {
-    const end_date = $('#end_date');
-    if (confirm('Are you sure you want to rent this car?')){
-         if (!end_date.val()) {
-            end_date.css('border-color', 'red');
-            return false;
-        }
-        axios.defaults.headers.common['Authorization'] = 'Token '
-                    + localStorage.getItem('token');
-        const pk = window.location.pathname.split('/')[2];
 
-        const data = {'end_date': end_date.val().toString(),
-                      'total_price': $('#total_price').text(),
-                      'pk': pk};
-        const url = 'http://localhost:8000/order/create/';
-        axios
-            .post(url, data)
-            .then(r => window.location.href = 'http://localhost:8000/account/dashboard/')
-            .catch(r => {
-                $('#modal').hide();
-                $('#modal_error').show();
-            });
-}
+$('#proceed_order').click(function () {
+        const end_date = $('#end_date');
+        if (confirm('Are you sure you want to rent this car?')){
+            if (!end_date.val()) {
+                end_date.css('border-color', 'red');
+                return false;
+            }
+            axios.defaults.headers.common['Authorization'] = 'Token '
+                + localStorage.getItem('token');
+            const pk = window.location.pathname.split('/')[2];
+            const total_price = $('#total_price').text();
+            const data = {'end_date': end_date.val().toString(),
+                          'total_price': total_price.substring(0, total_price.indexOf(' ')),
+                          'pk': pk
+                         };
+            const url = 'http://localhost:8000/order/create/';
+            axios
+                .post(url, data)
+                .then(r => window.location.href = 'http://localhost:8000/account/dashboard/')
+                .catch(r => {
+                    $('#modal').hide();
+                    $('#modal_error').show();
+                });
+        }
+    });
+
+
+$('#coupon').blur(function() {
+    const url = 'http://localhost:8000/order/check-coupon/';
+    const data = {'code': $(this).val()};
+    axios.defaults.headers.common['Authorization'] = 'Token '
+                + localStorage.getItem('token');
+    axios
+        .post(url, data)
+        .then(r => {
+            const status = r.data.status;
+            if (status === 'invalid')
+                $(this).attr('class', 'input is-danger').attr('title', 'Invalid coupon code');
+            else if (status === 'expired')
+                $(this).attr('class', 'input is-warning').attr('title', 'Expired coupon code');
+            else {
+                $(this).attr('class', 'input is-success').attr('title', 'Valid coupon code');
+                const discount = r.data.discount;
+                let current_price = parseInt($('#total_price').text());
+                const discount_price = current_price - (current_price * discount) / 100;
+                $('#total_price').text(discount_price + ' (' + discount + '% off)');
+                $(this).attr('disabled', 'disabled');
+            }
+        });
 });

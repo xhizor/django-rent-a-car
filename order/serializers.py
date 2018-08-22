@@ -7,4 +7,3 @@ class OrderSerializer(ModelSerializer):
         model = Order
         fields = '__all__'
         depth = 2
-

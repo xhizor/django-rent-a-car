@@ -52,7 +52,7 @@ class Car(models.Model):
     rate = models.FloatField(default=0)
     model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='cars', null=True)
     engine = models.ForeignKey(Engine, on_delete=models.CASCADE, related_name='cars', null=True)
-    additional_equipment = models.ManyToManyField(AditionalEquipment, related_name='cars', null=True)
+    additional_equipment = models.ManyToManyField(AditionalEquipment, related_name='cars')
 
     class Meta:
         db_table = 'car'
