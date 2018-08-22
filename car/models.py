@@ -50,9 +50,9 @@ class Car(models.Model):
     price_hourly = models.IntegerField()
     available = models.BooleanField(default=True)
     rate = models.FloatField(default=0)
-    model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='cars')
-    engine = models.ForeignKey(Engine, on_delete=models.CASCADE, related_name='cars')
-    additional_equipment = models.ManyToManyField(AditionalEquipment, related_name='cars')
+    model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='cars', null=True)
+    engine = models.ForeignKey(Engine, on_delete=models.CASCADE, related_name='cars', null=True)
+    additional_equipment = models.ManyToManyField(AditionalEquipment, related_name='cars', null=True)
 
     class Meta:
         db_table = 'car'

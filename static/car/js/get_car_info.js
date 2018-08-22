@@ -33,7 +33,7 @@ $('#get_car_info').click(function () {
                img = '<img src="/static/car/img/5-star.png" height="150" width="150">';
 
            $('p.subtitle').html(output + '</ul><br><i>Price per hour:</i> <b>$'
-                                + car.price_hourly + '</b><br><br>' + img);
+                                + '<span id="car_price">' + car.price_hourly + '</span></b><br><br>' + img);
 
 
        });
@@ -55,3 +55,4 @@ $('#get_car_info').click(function () {
        });
 
 });
+

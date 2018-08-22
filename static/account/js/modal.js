@@ -1,6 +1,6 @@
 $(function(){
     $('#btn').click(function(){
-            $("#modal").fadeOut('slow');
+            $("#modal #modal_error").fadeOut('slow');
         });
 
         $(document).keyup(function(e){
