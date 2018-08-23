@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+from django.utils.crypto import get_random_string
 from car.models import Car
 
 
@@ -15,7 +16,6 @@ class Coupon(models.Model):
         return f'{self.code} expired on {self.expired} - {self.discount}%'
 
     def save(self, *args, **kwargs):
-        from django.utils.crypto import get_random_string
         self.code = get_random_string(5)
         super(Coupon, self).save(*args, **kwargs)
 

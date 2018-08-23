@@ -1,11 +1,14 @@
 $(function(){
     $('#btn').click(function(){
-            $("#modal #modal_error").fadeOut('slow');
+            $("#modal").fadeOut('slow');
+            $("#modal_car").fadeOut('slow');
         });
 
         $(document).keyup(function(e){
-            if (e.which === 27)
+            if (e.which === 27){
                 $('#btn').click();
+                $('#btn_modal_car').click();
+            }
         });
 
         $('a.delete').click(function(){

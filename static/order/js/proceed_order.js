@@ -1,5 +1,5 @@
 $('#rent-a-car').click(function () {
-   $('#modal').show();
+   $('#modal_car').show();
    $('#price, #total_price').text($('#car_price').text());
 
 });
@@ -27,9 +27,11 @@ $('#proceed_order').click(function () {
             axios.defaults.headers.common['Authorization'] = 'Token '
                 + localStorage.getItem('token');
             const pk = window.location.pathname.split('/')[2];
-            const total_price = $('#total_price').text();
+            let total_price = $('#total_price').text();
+            if (total_price.indexOf('%') >= 0)
+                total_price = total_price.substring(0, total_price.indexOf(' '));
             const data = {'end_date': end_date.val().toString(),
-                          'total_price': total_price.substring(0, total_price.indexOf(' ')),
+                          'total_price': total_price,
                           'pk': pk
                          };
             const url = 'http://localhost:8000/order/create/';
@@ -37,7 +39,7 @@ $('#proceed_order').click(function () {
                 .post(url, data)
                 .then(r => window.location.href = 'http://localhost:8000/account/dashboard/')
                 .catch(r => {
-                    $('#modal').hide();
+                    $('#modal_car').hide();
                     $('#modal_error').show();
                 });
         }

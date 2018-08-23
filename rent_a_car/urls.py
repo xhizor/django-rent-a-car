@@ -36,3 +36,4 @@ if settings.DEBUG:  # Use local only
     ]
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)  # For serving media files
+

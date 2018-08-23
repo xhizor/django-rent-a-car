@@ -1,7 +1,9 @@
 from json import loads
+from django.contrib import messages
 from django.utils import timezone
-from rest_framework.generics import CreateAPIView, get_object_or_404
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.utils.html import format_html
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Car, Coupon
@@ -33,6 +35,12 @@ class CreateOrderAPIView(CreateAPIView):
         pk = self.request.data.get('pk')
         car = Car.objects.get(pk=pk)
         serializer.save(user=self.request.user, car=car)
+        messages.info(self.request,
+                      format_html('New order from {}! <br> Click <a href="{}"> here </a> to view order.',
+                                  self.request.user, 'http://localhost:8000/admin/order/order/'))
+
+
+
 
 
 

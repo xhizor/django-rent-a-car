@@ -57,7 +57,8 @@ $('input[type="checkbox"], input[type="radio"], #search_cars').click(function ()
                     '<img class="car' + val.id + '"></a></figure></div><div class="media-content"><p class="title is-5">' +
                     val.model.name + ' ' + val.name + '</p><p class="subtitle is-6"><i>' + val.engine.name + '</i><br>' +
                     val.engine.power + ' hp<br>' + val.model_year + '</p></div></div><div class="content">Price per hour: <b>$' +
-                    val.price_hourly + '</b><br><a href="#"><span class="tag is-success">Rent a car</span></a></div></div></div></div>';
+                    val.price_hourly + '</b><br><a href="http://localhost:8000/car/' + val.id + '/info/"><span class="tag is-success">' +
+                    'Rent a car</span></a></div></div></div></div>';
                 counter++;
         axios
             .get('http://localhost:8000/car/list/' + val.id + '/gallery/')
