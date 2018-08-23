@@ -30,7 +30,7 @@ $('#proceed_order').click(function () {
             let total_price = $('#total_price').text();
             if (total_price.indexOf('%') >= 0)
                 total_price = total_price.substring(0, total_price.indexOf(' '));
-            const data = {'end_date': end_date.val().toString(),
+            const data = {'end_date': end_date.val().toString().substring(0, 10),
                           'total_price': total_price,
                           'pk': pk
                          };
@@ -62,7 +62,7 @@ $('#coupon').blur(function() {
             else {
                 $(this).attr('class', 'input is-success').attr('title', 'Valid coupon code');
                 const discount = r.data.discount;
-                let current_price = parseInt($('#total_price').text());
+                let current_price = parseFloat($('#total_price').text());
                 const discount_price = current_price - (current_price * discount) / 100;
                 $('#total_price').text(discount_price + ' (' + discount + '% off)');
                 $(this).attr('disabled', 'disabled');

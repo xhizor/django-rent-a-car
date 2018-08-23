@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Order detail #{{ order.pk }} for our user: {{ order.user.get_full_name }}</h2><br>
+<h3>Start date: {{ order.start_date | date:"Y-m-d" }} </h3>
+<h3>End date: {{ order.end_date }} </h3>
+<h3>Total price: ${{ order.total_price }} </h3>
+<h3>Rented car: {{ order.car.model.name }} {{ order.car.name }} </h3><br>
+<h3><i>Thank you for using our Rent-a-car service! </i></h3>
+</body>
+</html>

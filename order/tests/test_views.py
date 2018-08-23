@@ -3,10 +3,11 @@ import pytest
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
-from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED, HTTP_401_UNAUTHORIZED,\
+    HTTP_400_BAD_REQUEST
 from rest_framework.test import APIClient
 from car.models import Car
-from order.models import Coupon
+from order.models import Coupon, Order
 
 username = 'test_user'
 password = 'test_pass'
@@ -62,7 +63,8 @@ def test_create_order_unauthorized(test_user):
 
 def test_valid_coupon_code(test_user):
     now = timezone.now()
-    coupon = Coupon.objects.create(expired=now + timedelta(days=1), discount=10)
+    coupon = Coupon.objects.create(expired=now + timedelta(days=1),
+                                   discount=10)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -74,7 +76,8 @@ def test_valid_coupon_code(test_user):
 
 def test_invalid_coupon_code(test_user):
     now = timezone.now()
-    coupon = Coupon.objects.create(expired=now + timedelta(days=1), discount=10)
+    coupon = Coupon.objects.create(expired=now + timedelta(days=1),
+                                   discount=10)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -86,7 +89,8 @@ def test_invalid_coupon_code(test_user):
 
 def test_expired_coupon_code(test_user):
     now = timezone.now()
-    coupon = Coupon.objects.create(expired=now + timedelta(days=-1), discount=10)
+    coupon = Coupon.objects.create(expired=now + timedelta(days=-1),
+                                   discount=10)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -94,4 +98,8 @@ def test_expired_coupon_code(test_user):
     url = reverse('order:check_coupon')
     r = client.post(url, data=data, format='json')
     assert r.json().get('status') == 'expired'
+
+
+
+
 

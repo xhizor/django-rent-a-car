@@ -8,4 +8,5 @@ pillow
 pytest-django
 python-decouple
 social-auth-app-django
+WeasyPrint
 werkzeug
