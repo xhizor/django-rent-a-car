@@ -1,12 +1,19 @@
+from io import BytesIO
 from json import loads
+from weasyprint import HTML
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import format_html
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Car, Coupon
+from .models import Car, Coupon, Order
 from .serializers import OrderSerializer
 
 
@@ -37,11 +44,24 @@ class CreateOrderAPIView(CreateAPIView):
         serializer.save(user=self.request.user, car=car)
         messages.info(self.request,
                       format_html('New order from {}! <br> Click <a href="{}"> here </a> to view order.',
-                                  self.request.user, 'http://localhost:8000/admin/order/order/'))
+                                  self.request.user.get_full_name(), 'http://localhost:8000/admin/order/order/' +
+                                  str(serializer.data.get('id')) + '/change/'))
 
 
-
-
-
-
+@staff_member_required
+def admin_send_pdf_order_detail_to_email(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    if order.approval:
+        html = render_to_string('order/order_detail_pdf.html', {'order': order})
+        out = BytesIO()
+        HTML(string=html).write_pdf(out)
+        subject = 'Rent-a-car Order detail'
+        message = f'We approved your Order #{order.pk}. You can see Order detail in PDF attachment. '\
+                  'Thank you for using our Rent-a-car service!'
+        email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [order.user.email])
+        email.attach('Order#{}_{}.pdf'.format(order.pk, order.car.name),
+                     out.getvalue(), 'application/pdf')
+        email.send()
+        return HttpResponse('Email is successfully sent!')
+    return HttpResponseBadRequest('Oops! This order is not approved.')
 
