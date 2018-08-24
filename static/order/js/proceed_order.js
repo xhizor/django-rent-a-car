@@ -47,10 +47,11 @@ $('#proceed_order').click(function () {
 
 
 $('#coupon').blur(function() {
-    const url = 'http://localhost:8000/order/check-coupon/';
-    const data = {'code': $(this).val()};
     axios.defaults.headers.common['Authorization'] = 'Token '
                 + localStorage.getItem('token');
+    const url = 'http://localhost:8000/order/check-coupon/';
+    const data = {'code': $(this).val()};
+
     axios
         .post(url, data)
         .then(r => {

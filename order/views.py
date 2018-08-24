@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import format_html
-from rest_framework.generics import CreateAPIView, get_object_or_404
+from rest_framework.generics import CreateAPIView, get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -48,6 +48,19 @@ class CreateOrderAPIView(CreateAPIView):
                                   str(serializer.data.get('id')) + '/change/'))
 
 
+class GetOrdersAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+
+    def get_queryset(self):
+        if self.request.query_params.get('active') == 'True':
+            return self.queryset.filter(approval=True, finished=False, user=self.request.user)
+        if self.request.query_params.get('finished') == 'True':
+            return self.queryset.filter(approval=True, finished=True, user=self.request.user)
+        return self.queryset.filter(approval=False, user=self.request.user)
+
+
 @staff_member_required
 def admin_send_pdf_order_detail_to_email(request, pk):
     order = get_object_or_404(Order, pk=pk)
@@ -62,6 +75,7 @@ def admin_send_pdf_order_detail_to_email(request, pk):
         email.attach('Order#{}_{}.pdf'.format(order.pk, order.car.name),
                      out.getvalue(), 'application/pdf')
         email.send()
-        return HttpResponse('Email is successfully sent!')
-    return HttpResponseBadRequest('Oops! This order is not approved.')
+        return HttpResponse(f'Email has been sent successfully to: {request.user.get_full_name()}!')
+    return HttpResponseBadRequest('Oops! This order is not approved yet.')
+
 

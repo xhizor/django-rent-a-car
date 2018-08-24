@@ -13,18 +13,22 @@ class ModelAdmin(admin.ModelAdmin):
 
 def approve_order(modeladmin, request, queryset):
     queryset.update(approval=True)
+    car = queryset[0].car
+    car.available = False
+    car.save()
     approve_order.short_description = 'Approve order'
 
 
 @admin.register(Order)
 class ModelAdmin(admin.ModelAdmin):
-    def order_detail_to_pdf(self, obj):
-        return format_html('<a href="{}">Send PDF to email</a>',
-                           reverse('order:order_detail_to_pdf', kwargs={'pk': obj.pk}))
+    def send_pdf_order_detail_to_email(self, order):
+        return format_html('<a href="{}" onclick="return confirm(\'Are you sure?\')">Send Email</a>',
+                           reverse('order:send_pdf_to_email', kwargs={'pk': order.pk}))
 
-    order_detail_to_pdf.short_description = 'Send PDF Order detail to email'
+    send_pdf_order_detail_to_email.short_description = 'Send PDF Order detail to email'
 
-    list_display = ('start_date', 'end_date', 'user', 'car', 'approval', 'finished', 'order_detail_to_pdf')
+    list_display = ('start_date', 'end_date', 'user', 'car', 'approval', 'finished',
+                    'send_pdf_order_detail_to_email')
     search_fields = ('user__username', 'car__model__name', 'car__name')
     list_filter = ('approval', 'finished')
     actions = (approve_order,)
