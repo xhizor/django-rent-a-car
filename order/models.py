@@ -23,10 +23,11 @@ class Coupon(models.Model):
 class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.CharField(max_length=20)
-    approval = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
     total_price = models.FloatField(null=True, blank=True)
     comment = models.CharField(max_length=100, null=True, blank=True)
+    canceled = models.BooleanField(default=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='orders')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='orders')

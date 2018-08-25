@@ -55,16 +55,26 @@ class GetOrdersAPIView(ListAPIView):
 
     def get_queryset(self):
         if self.request.query_params.get('active') == 'True':
-            return self.queryset.filter(approval=True, finished=False, user=self.request.user)
+            return self.queryset.filter(approved=True, finished=False, user=self.request.user)
         if self.request.query_params.get('finished') == 'True':
-            return self.queryset.filter(approval=True, finished=True, user=self.request.user)
-        return self.queryset.filter(approval=False, user=self.request.user)
+            return self.queryset.filter(approved=True, finished=True, user=self.request.user)
+        return self.queryset.filter(approved=False, user=self.request.user)
+
+
+class CancelOrderAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+        order.canceled = True
+        order.save()
+        return Response({'canceled': True})
 
 
 @staff_member_required
 def admin_send_pdf_order_detail_to_email(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    if order.approval:
+    if order.approved:
         html = render_to_string('order/order_detail_pdf.html', {'order': order})
         out = BytesIO()
         HTML(string=html).write_pdf(out)
@@ -75,7 +85,7 @@ def admin_send_pdf_order_detail_to_email(request, pk):
         email.attach('Order#{}_{}.pdf'.format(order.pk, order.car.name),
                      out.getvalue(), 'application/pdf')
         email.send()
-        return HttpResponse(f'Email has been sent successfully to: {request.user.get_full_name()}!')
+        return HttpResponse(f'Email has been sent successfully to {request.user.get_full_name()}!')
     return HttpResponseBadRequest('Oops! This order is not approved yet.')
 
 

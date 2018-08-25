@@ -12,7 +12,7 @@ class ModelAdmin(admin.ModelAdmin):
 
 
 def approve_order(modeladmin, request, queryset):
-    queryset.update(approval=True)
+    queryset.update(approved=True)
     car = queryset[0].car
     car.available = False
     car.save()
@@ -27,9 +27,9 @@ class ModelAdmin(admin.ModelAdmin):
 
     send_pdf_order_detail_to_email.short_description = 'Send PDF Order detail to email'
 
-    list_display = ('start_date', 'end_date', 'user', 'car', 'approval', 'finished',
-                    'send_pdf_order_detail_to_email')
+    list_display = ('start_date', 'end_date', 'user', 'car', 'approved', 'finished',
+                    'canceled', 'send_pdf_order_detail_to_email')
     search_fields = ('user__username', 'car__model__name', 'car__name')
-    list_filter = ('approval', 'finished')
+    list_filter = ('approved', 'canceled', 'finished')
     actions = (approve_order,)
 

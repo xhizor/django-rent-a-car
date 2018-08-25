@@ -19,10 +19,10 @@
     </ul>
     <ul class="menu-list">
     <li>
-      <a {% if 'orders' in request.path %} class="is-active" {% endif %}>Orders</a>
+      <a href="#" id="pending_orders" {% if 'orders' in request.path %} class="is-active" {% endif %}>Orders</a>
       <ul>
-        <li><a>Active</a></li>
-        <li><a>Finished</a></li>
+        <li><a href="#" id="active_orders">Active</a></li>
+        <li><a href="#" id="finished_orders">Finished</a></li>
       </ul>
     </li>
   </ul>
@@ -39,6 +39,12 @@
 </div>
 <div class="column is-2"></div>
 <div class="column is-3">
+    <article class="message is-danger" style="display:none;" id="not_found">
+                                <div class="message-body">
+                                     No Orders where found. Click <a href="{% url 'car:view_cars' %}"
+                                     style="text-decoration:none; color:blue">here</a> to make an order!
+                                </div>
+                             </article>
     <a class="fillForm"><span class="tag is-link">Update your profile</span></a><br><br>
     <div class="box" style="display:none;">
         <form>
@@ -81,6 +87,31 @@
     </div>
     </div>
 </div>
-</div><div style="margin-top: 17%"></div>
+<div class="columns">
+    <div class="column is-4"></div>
+    <div class="column" id="order_data" style="display:none; margin-top: -20%;">
+        <table class="table is-hoverable is-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Car</th>
+                    <th>Price ($)</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Status</th>
+                    <th id="th_cancel" style="display:none;"></th>
+                </tr>
+            </thead>
+            <tbody id="rows">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top: 17%"></div>
+</div>
+    {% block script %}
+        <script src="{% static 'order/js/get_orders.js' %}"></script>
+    {% endblock script %}
 {% endblock content %}
 

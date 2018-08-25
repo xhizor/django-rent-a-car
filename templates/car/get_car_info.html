@@ -26,7 +26,7 @@
                         <input class="input" type="datetime-local" id="end_date" autofocus="true">
                         <br><br>
                         <label class="label">Coupon:</label>
-                        <input class="input" id="coupon" type="text" autofocus="true" autocomplete="off">
+                        <input class="input" id="coupon" type="text" autofocus="true" maxlength="5" autocomplete="off">
                         <br><br>
                         <label class="label">Total Price: $<span id="total_price"></span></label><br>
                         <a class="button is-success" id="proceed_order"> Proceed order </a>
@@ -35,7 +35,7 @@
         </div>
         </div>
         </div>
-         <button class="modal-close is-medium"></button>
+         <button class="modal-close is-medium" id="btn_modal_car"></button>
         </div>
 
         <div class="modal is-active" id="modal_error" style="display:none;">
