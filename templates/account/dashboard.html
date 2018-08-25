@@ -22,6 +22,7 @@
       <a href="#" id="pending_orders" {% if 'orders' in request.path %} class="is-active" {% endif %}>Orders</a>
       <ul>
         <li><a href="#" id="active_orders">Active</a></li>
+        <li><a href="#" id="canceled_orders">Canceled</a></li>
         <li><a href="#" id="finished_orders">Finished</a></li>
       </ul>
     </li>
@@ -95,7 +96,7 @@
                 <tr>
                     <th>#</th>
                     <th>Car</th>
-                    <th>Price ($)</th>
+                    <th>Price</th>
                     <th>Start date</th>
                     <th>End date</th>
                     <th>Status</th>

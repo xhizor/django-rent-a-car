@@ -55,10 +55,12 @@ class GetOrdersAPIView(ListAPIView):
 
     def get_queryset(self):
         if self.request.query_params.get('active') == 'True':
-            return self.queryset.filter(approved=True, finished=False, user=self.request.user)
+            return self.queryset.filter(approved=True, canceled=False, finished=False, user=self.request.user)
+        if self.request.query_params.get('canceled') == 'True':
+            return self.queryset.filter(canceled=True, approved=False, finished=False, user=self.request.user)
         if self.request.query_params.get('finished') == 'True':
-            return self.queryset.filter(approved=True, finished=True, user=self.request.user)
-        return self.queryset.filter(approved=False, user=self.request.user)
+            return self.queryset.filter(approved=True, finished=True, canceled=False, user=self.request.user)
+        return self.queryset.filter(approved=False, canceled=False, finished=False, user=self.request.user)
 
 
 class CancelOrderAPIView(APIView):

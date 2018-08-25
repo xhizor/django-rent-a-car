@@ -20,6 +20,7 @@ function get_orders(url, status){
     axios
             .get(url)
             .then(r => {
+                $('#not_found').hide();
                 $('a.fillForm').hide();
                 $('#order_data').hide();
                 $('#rows').html('');
@@ -28,7 +29,7 @@ function get_orders(url, status){
                 if (Object.keys(orders).length) {
                     $.each(orders, function (key, val) {
                         rows += '<tr><td>' + val.id + '</td><td>' +
-                            val.car.model.name + ' ' + val.car.name + '</td><td>' +
+                            val.car.model.name + ' ' + val.car.name + '</td><td>$' +
                             val.total_price + '</td><td>' + val.start_date + '</td><td>' +
                             val.end_date + '</td><td>';
                             if (status === 'pending'){
@@ -38,6 +39,8 @@ function get_orders(url, status){
                                 }
                             else if (status === 'active')
                                 rows += '<span class="tag is-link">Active</span></td>';
+                            else if (status === 'canceled')
+                                rows += '<span class="tag is-danger">Canceled</span></td>';
                             else
                                 rows += '<span class="tag is-success">Finished</span></td>';
                         rows += '</tr>';
@@ -62,6 +65,12 @@ $('#pending_orders').click(function () {
 $('#active_orders').click(function () {
         const url = 'http://localhost:8000/order/get-orders/?active=True';
         get_orders(url, 'active');
+
+});
+
+$('#canceled_orders').click(function () {
+        const url = 'http://localhost:8000/order/get-orders/?canceled=True';
+        get_orders(url, 'canceled');
 
 });
 
