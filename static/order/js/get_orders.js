@@ -6,13 +6,11 @@ function cancel_order(pk) {
         axios
             .put(url)
             .then(r => {
-                if (r.data.canceled)
-                    $('span').text('Canceled');
-                    $('a.delete').hide();
-
+                location.reload();
             });
     }
 }
+
 
 function get_orders(url, status){
     axios.defaults.headers.common['Authorization'] = 'Token '

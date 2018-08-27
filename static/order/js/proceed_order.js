@@ -1,6 +1,14 @@
+$(document).keyup(function(e){
+    if (e.which === 13)
+        $('#rent-a-car').click();
+});
+
 $('#rent-a-car').click(function () {
-   $('#modal_car').show();
+   $('#payment').hide();
+   $('#modal_order').show('slow');
    $('#price, #total_price').text($('#car_price').text());
+   if ($('#proceed_order').attr('disabled') === 'disabled')
+       $('#payment').show('slow');
 
 });
 
@@ -37,36 +45,54 @@ $('#proceed_order').click(function () {
             const url = 'http://localhost:8000/order/create/';
             axios
                 .post(url, data)
-                .then(r => window.location.href = 'http://localhost:8000/account/dashboard/')
+                .then(r => {
+                    $('#proceed_order').attr('disabled', 'disabled')
+                                       .off('click');
+                    $('#end_date').attr('disabled', 'disabled');
+                    $('#coupon').attr('disabled', 'disabled');
+                    $('#payment').show('slow');
+                })
                 .catch(r => {
                     $('#modal_car').hide();
-                    $('#modal_error').show();
+                    $('#modal_error').show('slow');
                 });
         }
     });
 
 
 $('#coupon').blur(function() {
-    axios.defaults.headers.common['Authorization'] = 'Token '
-                + localStorage.getItem('token');
-    const url = 'http://localhost:8000/order/check-coupon/';
-    const data = {'code': $(this).val()};
+    if ($(this).val().length === 5) {
+        axios.defaults.headers.common['Authorization'] = 'Token '
+            + localStorage.getItem('token');
+        const url = 'http://localhost:8000/order/check-coupon/';
+        const data = {'code': $(this).val()};
 
-    axios
-        .post(url, data)
-        .then(r => {
-            const status = r.data.status;
-            if (status === 'invalid')
-                $(this).attr('class', 'input is-danger').attr('title', 'Invalid coupon code');
-            else if (status === 'expired')
-                $(this).attr('class', 'input is-warning').attr('title', 'Expired coupon code');
-            else {
-                $(this).attr('class', 'input is-success').attr('title', 'Valid coupon code');
-                const discount = r.data.discount;
-                let current_price = parseFloat($('#total_price').text());
-                const discount_price = current_price - (current_price * discount) / 100;
-                $('#total_price').text(discount_price + ' (' + discount + '% off)');
-                $(this).attr('disabled', 'disabled');
-            }
-        });
+        axios
+            .post(url, data)
+            .then(r => {
+                const status = r.data.status;
+                if (status === 'invalid')
+                    $(this).attr('class', 'input is-danger').attr('title', 'Invalid coupon code');
+                else if (status === 'expired')
+                    $(this).attr('class', 'input is-warning').attr('title', 'Expired coupon code');
+                else {
+                    $(this).attr('class', 'input is-success').attr('title', 'Valid coupon code');
+                    const discount = r.data.discount;
+                    let current_price = parseFloat($('#total_price').text());
+                    const discount_price = current_price - (current_price * discount) / 100;
+                    $('#total_price').text(discount_price + ' (' + discount + '% off)');
+                    $(this).attr('disabled', 'disabled');
+                }
+            });
+    }
+});
+
+$('#payment').click(function () {
+    $('#modal_order').hide();
+    $('#modal_payment').show('slow');
+});
+
+$('#back_to_order').click(function () {
+   $('#modal_payment').hide();
+   $('#modal_order').show('slow');
 });

@@ -15,7 +15,8 @@
     <a id="get_car_info" href="#"><span class="tag is-link">Get car info</span></a>
 </section>
     <section class="section" style="margin-left:38%;">
-      <div class="modal is-active" id="modal_car" style="display:none;">
+     <!-- Order modal -->
+      <div class="modal is-active" id="modal_order" style="display:none;">
         <div class="modal-background"></div>
         <div class="modal-content">
              <div class="card">
@@ -23,19 +24,48 @@
                     <div class="control">
                         <label class="label"> Price per hour: $<span id="price"></span></label><br>
                         <label class="label"> End date: </label>
-                        <input class="input" type="datetime-local" id="end_date" autofocus="true">
+                        <input class="input" type="datetime-local" id="end_date" autofocus>
                         <br><br>
                         <label class="label">Coupon:</label>
-                        <input class="input" id="coupon" type="text" autofocus="true" maxlength="5" autocomplete="off">
+                        <input class="input" id="coupon" type="text" autofocus maxlength="5" autocomplete="off">
                         <br><br>
                         <label class="label">Total Price: $<span id="total_price"></span></label><br>
-                        <a class="button is-success" id="proceed_order"> Proceed order </a>
+                        <a class="button is-success" id="proceed_order"> Proceed Order </a>
+                        <a class="button is-success" id="payment" style="display:none;"> Go to Payment </a>
+
 
         </div>
         </div>
         </div>
         </div>
-         <button class="modal-close is-medium" id="btn_modal_car"></button>
+         <button class="modal-close is-medium" id="btn_modal_order"></button>
+        </div>
+
+        <!-- Checkout modal -->
+        <div class="modal is-active" id="modal_payment" style="display:none;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+             <div class="card">
+                <div class="card-content">
+                    <div class="control">
+                        <a href="#" id="back_to_order" class="button is-link">Back</a>
+                        <img src="/static/order/img/cards.png" style="margin-left: 30%;">
+                        <br><br>
+                        <label class="label"> Name on card: </label>
+                        <input type="text" autofocus class="input"><br><br>
+                        <label class="label"> Card number: </label>
+                        <input type="text" autocomplete="off" maxlength="19" class="input"><br><br>
+                        <label class="label"> Expiration date: </label>
+                        <input type="date" class="input"><br><br>
+                        <label class="label"> CVV: </label>
+                        <input type="text" maxlength="3" autocomplete="off" class="input"><br><br>
+                        <a class="button is-success" id="checkout"> Checkout </a>
+
+        </div>
+        </div>
+        </div>
+        </div>
+         <button class="modal-close is-medium" id="btn_modal_payment"></button>
         </div>
 
         <div class="modal is-active" id="modal_error" style="display:none;">

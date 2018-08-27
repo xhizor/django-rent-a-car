@@ -70,6 +70,10 @@ class CancelOrderAPIView(APIView):
         order = get_object_or_404(Order, pk=pk)
         order.canceled = True
         order.save()
+        messages.info(self.request,
+                      format_html('{} cancel the Order <a href="{}">{}</a>',
+                                  self.request.user.get_full_name(),
+                                  f'http://localhost:8000/admin/order/order/{order.pk}', f'#{order.pk}'))
         return Response({'canceled': True})
 
 

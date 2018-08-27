@@ -31,5 +31,6 @@ class ModelAdmin(admin.ModelAdmin):
                     'canceled', 'send_pdf_order_detail_to_email')
     search_fields = ('user__username', 'car__model__name', 'car__name')
     list_filter = ('approved', 'canceled', 'finished')
+    list_editable = ('approved', 'canceled', 'finished')
     actions = (approve_order,)
 
