@@ -10,8 +10,6 @@
 
 {% block content %}
 <section class="section">
-    <a id="back" href="{% url 'car:view_cars' %}" style="margin-left:20%; display:none">
-        <span class="tag is-link">Back</span></a>
     <a id="get_car_info" href="#"><span class="tag is-link">Get car info</span></a>
 </section>
     <section class="section" style="margin-left:38%;">
@@ -31,7 +29,6 @@
                         <br><br>
                         <label class="label">Total Price: $<span id="total_price"></span></label><br>
                         <a class="button is-success" id="proceed_order"> Proceed Order </a>
-                        <a class="button is-success" id="payment" style="display:none;"> Go to Payment </a>
 
 
         </div>
@@ -41,32 +38,7 @@
          <button class="modal-close is-medium" id="btn_modal_order"></button>
         </div>
 
-        <!-- Checkout modal -->
-        <div class="modal is-active" id="modal_payment" style="display:none;">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-             <div class="card">
-                <div class="card-content">
-                    <div class="control">
-                        <a href="#" id="back_to_order" class="button is-link">Back</a>
-                        <img src="/static/order/img/cards.png" style="margin-left: 30%;">
-                        <br><br>
-                        <label class="label"> Name on card: </label>
-                        <input type="text" autofocus class="input"><br><br>
-                        <label class="label"> Card number: </label>
-                        <input type="text" autocomplete="off" maxlength="19" class="input"><br><br>
-                        <label class="label"> Expiration date: </label>
-                        <input type="date" class="input"><br><br>
-                        <label class="label"> CVV: </label>
-                        <input type="text" maxlength="3" autocomplete="off" class="input"><br><br>
-                        <a class="button is-success" id="checkout"> Checkout </a>
-
-        </div>
-        </div>
-        </div>
-        </div>
-         <button class="modal-close is-medium" id="btn_modal_payment"></button>
-        </div>
+        <!-- Unauthorized account -->
 
         <div class="modal is-active" id="modal_error" style="display:none;">
         <div class="modal-background"></div>
@@ -79,6 +51,7 @@
         </div>
         </div>
         </div>
+
 
     <div class="columns">
         <div class="column is-5">

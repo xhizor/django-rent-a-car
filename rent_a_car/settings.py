@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'car.apps.CarConfig',
     'order.apps.OrderConfig',
+    'stripe',
 ]
 
 MIDDLEWARE = [

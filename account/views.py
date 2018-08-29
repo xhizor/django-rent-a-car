@@ -1,3 +1,4 @@
+from decouple import config
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from rest_framework import viewsets
@@ -64,7 +65,10 @@ class DashboardView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get(self, request):
-        return Response({'form': UserForm})
+        return Response({'form': UserForm,
+                         'pub_key': config('STRIPE_PUB_KEY'),
+                         'months': range(1, 13),
+                         'years': range(2018, 2026)})
 
 
 class UserProfileUpdateView(APIView):

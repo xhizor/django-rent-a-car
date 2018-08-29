@@ -101,6 +101,7 @@
                     <th>End date</th>
                     <th>Status</th>
                     <th id="th_cancel" style="display:none;"></th>
+                    <th id="th_payment" style="display:none;"></th>
                 </tr>
             </thead>
             <tbody id="rows">
@@ -109,9 +110,78 @@
     </div>
 </div>
 
+ <!-- Checkout modal -->
+        <div class="modal is-active" id="modal_payment" style="display:none;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+             <div class="card">
+                <div class="card-content">
+                    <div class="control">
+                        <img src="/static/order/img/cards.png" style="margin-left: 50%;">
+                        <br><br>
+                        <input type="hidden" id="order_pk">
+                        <label class="label"> Name on card: </label>
+                        <input type="text" id="card_name" autofocus class="input"><br><br>
+                        <label class="label"> Card number: </label>
+                        <input type="text" id="card_number" autocomplete="off" maxlength="19" class="input"><br><br>
+                        <label class="label"> Expiration month: </label>
+                         <div class="select">
+                        <select id="expiry_month">
+                            <option value="">--Month--</option>
+                             {% for month in months %}
+                                <option>{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <br><br>
+                        <label class="label"> Expiration year: </label>
+                        <div class="select">
+                        <select id="expiry_year">
+                            <option value="">--Year--</option>
+                            {% for year in years %}
+                                <option>{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                        </div><br><br>
+                        <label class="label"> CVV: </label>
+                        <input type="text" id="cvv" maxlength="3" autocomplete="off" class="input"><br><br>
+                        <a class="button is-success" id="checkout"> Checkout </a><br><br>
+                         <article class="message is-danger" style="display:none;" id="payment_error">
+                            <div class="message-body">
+                                 Oops! Your card information is invalid.
+                            </div>
+                         </article>
+
+
+        </div>
+        </div>
+        </div>
+        </div>
+         <button class="modal-close is-medium" id="btn_modal_payment"></button>
+        </div>
+
+
+     <!-- Order complete -->
+     <div class="modal is-active" id="modal_order_complete" style="display:none;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+             <div class="card">
+                <div class="card-content">
+                    Congratulations! Your payment has been processed successfully.<br>
+                    Click <a href="{% url 'account:dashboard' %}"><span class="tag is-link">here</span></a>
+                    to view active orders.
+        </div>
+        </div>
+        </div>
+         <button class="modal-close is-medium" id="btn_modal_order_complete"></button>
+        </div>
+
 <div style="margin-top: 17%"></div>
 </div>
     {% block script %}
+        <script src="{% static 'account/js/modal.js' %}"></script>
+        <script src="https://js.stripe.com/v2"></script>
+        <script> Stripe.publishableKey = '{{ pub_key }}' </script>
         <script src="{% static 'order/js/get_orders.js' %}"></script>
     {% endblock script %}
 {% endblock content %}

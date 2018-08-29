@@ -1,5 +1,9 @@
 from io import BytesIO
 from json import loads
+import stripe
+from decouple import config
+from django.db.models import Q
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from weasyprint import HTML
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -10,7 +14,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.html import format_html
 from rest_framework.generics import CreateAPIView, get_object_or_404, ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Car, Coupon, Order
@@ -55,12 +59,17 @@ class GetOrdersAPIView(ListAPIView):
 
     def get_queryset(self):
         if self.request.query_params.get('active') == 'True':
-            return self.queryset.filter(approved=True, canceled=False, finished=False, user=self.request.user)
+            return self.queryset\
+                   .filter(Q(approved=True, canceled=False, finished=False, paid=False) |
+                           Q(approved=True, canceled=False, finished=False, paid=True))
         if self.request.query_params.get('canceled') == 'True':
-            return self.queryset.filter(canceled=True, approved=False, finished=False, user=self.request.user)
+            return self.queryset\
+                   .filter(canceled=True, approved=False, finished=False, paid=False)
         if self.request.query_params.get('finished') == 'True':
-            return self.queryset.filter(approved=True, finished=True, canceled=False, user=self.request.user)
-        return self.queryset.filter(approved=False, canceled=False, finished=False, user=self.request.user)
+            return self.queryset\
+                .filter(approved=True, paid=True, finished=True, canceled=False)
+        return self.queryset\
+            .filter(approved=False, canceled=False, finished=False, paid=False, user=self.request.user)
 
 
 class CancelOrderAPIView(APIView):
@@ -75,6 +84,28 @@ class CancelOrderAPIView(APIView):
                                   self.request.user.get_full_name(),
                                   f'http://localhost:8000/admin/order/order/{order.pk}', f'#{order.pk}'))
         return Response({'canceled': True})
+
+
+class StripePaymentAPIVIew(APIView):
+    permission_classes = (AllowAny,)
+    stripe.api_key = config('STRIPE_SECRET_KEY')
+
+    def post(self, request, pk):
+        try:
+            stripe_id = loads(request.body.decode('utf-8')).get('stripe_id')
+            total_price = loads(request.body.decode('utf-8')).get('total_price')
+            stripe.Charge.create(amount=int(total_price), currency='USD',
+                                 description='Payment from Rent-a-car web site', card=stripe_id)
+            order = Order.objects.get(pk=pk)
+            order.paid = True
+            order.save()
+            messages.info(self.request,
+                          format_html('{} paid the Order <a href="{}">{}</a>',
+                                      self.request.user.get_full_name(),
+                                      f'http://localhost:8000/admin/order/order/{order.pk}', f'#{order.pk}'))
+            return Response()
+        except Exception:
+            return Response(status=HTTP_400_BAD_REQUEST)
 
 
 @staff_member_required

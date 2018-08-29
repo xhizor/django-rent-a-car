@@ -4,7 +4,7 @@ django-debug-toolbar
 django-extensions
 django-filter
 django-rest-framework
-nexmo
+dj-stripe
 pillow
 pytest-django
 python-decouple

@@ -1,6 +1,5 @@
-from django.db.models import Count
 from rest_framework.filters import SearchFilter
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -67,6 +66,7 @@ class GetCarInfoAPIView(APIView):
 
     def get(self, request, pk=None):
         return Response()
+
 
 
 

@@ -27,10 +27,10 @@ class ModelAdmin(admin.ModelAdmin):
 
     send_pdf_order_detail_to_email.short_description = 'Send PDF Order detail to email'
 
-    list_display = ('start_date', 'end_date', 'user', 'car', 'approved', 'finished',
-                    'canceled', 'send_pdf_order_detail_to_email')
+    list_display = ('start_date', 'end_date', 'user', 'car', 'approved', 'canceled',
+                    'finished', 'paid', 'send_pdf_order_detail_to_email')
     search_fields = ('user__username', 'car__model__name', 'car__name')
     list_filter = ('approved', 'canceled', 'finished')
-    list_editable = ('approved', 'canceled', 'finished')
+    list_editable = ('approved', 'canceled', 'finished', 'paid')
     actions = (approve_order,)
 

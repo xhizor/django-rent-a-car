@@ -1,14 +1,6 @@
-$(document).keyup(function(e){
-    if (e.which === 13)
-        $('#rent-a-car').click();
-});
-
 $('#rent-a-car').click(function () {
-   $('#payment').hide();
    $('#modal_order').show('slow');
    $('#price, #total_price').text($('#car_price').text());
-   if ($('#proceed_order').attr('disabled') === 'disabled')
-       $('#payment').show('slow');
 
 });
 
@@ -38,7 +30,7 @@ $('#proceed_order').click(function () {
             let total_price = $('#total_price').text();
             if (total_price.indexOf('%') >= 0)
                 total_price = total_price.substring(0, total_price.indexOf(' '));
-            const data = {'end_date': end_date.val().toString().substring(0, 10),
+            const data = {'end_date': end_date.val().toString(),
                           'total_price': total_price,
                           'pk': pk
                          };
@@ -46,11 +38,7 @@ $('#proceed_order').click(function () {
             axios
                 .post(url, data)
                 .then(r => {
-                    $('#proceed_order').attr('disabled', 'disabled')
-                                       .off('click');
-                    $('#end_date').attr('disabled', 'disabled');
-                    $('#coupon').attr('disabled', 'disabled');
-                    $('#payment').show('slow');
+                   window.location.href = 'http://localhost:8000/account/dashboard/';
                 })
                 .catch(r => {
                     $('#modal_car').hide();
@@ -87,12 +75,3 @@ $('#coupon').blur(function() {
     }
 });
 
-$('#payment').click(function () {
-    $('#modal_order').hide();
-    $('#modal_payment').show('slow');
-});
-
-$('#back_to_order').click(function () {
-   $('#modal_payment').hide();
-   $('#modal_order').show('slow');
-});

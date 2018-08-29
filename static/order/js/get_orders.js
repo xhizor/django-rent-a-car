@@ -27,16 +27,27 @@ function get_orders(url, status){
                 if (Object.keys(orders).length) {
                     $.each(orders, function (key, val) {
                         rows += '<tr><td>' + val.id + '</td><td>' +
-                            val.car.model.name + ' ' + val.car.name + '</td><td>$' +
-                            val.total_price + '</td><td>' + val.start_date + '</td><td>' +
+                            val.car.model.name + ' ' + val.car.name + '</td><td>$<span id="total_price">' +
+                            val.total_price + '</span></td><td>' + val.start_date + '</td><td>' +
                             val.end_date + '</td><td>';
                             if (status === 'pending'){
                                 rows += '<span class="tag is-danger">Pending</span></td><td><a href="#" class="delete"' +
                                         'onclick="cancel_order(' + val.id + ');">Cancel</a></td>';
                                         $('#th_cancel').show();
                                 }
-                            else if (status === 'active')
-                                rows += '<span class="tag is-link">Active</span></td>';
+                            else if (status === 'active') {
+                                if (val.approved && val.paid) {
+                                    $('#th_payment').hide();
+                                    rows += '<span class="tag is-success"> Paid </span>';
+                                }
+                                else {
+                                    $('#order_pk').val(val.id);
+                                    $('#th_payment').show();
+                                    rows += '<span class="tag is-link" id="td_active">Active</span></td><td><a href="#" ' +
+                                        'onclick="$(\'#modal_payment\').show(\'slow\');" id="td_payment">' +
+                                        '<span class="tag is-success">Go to Payment</span></a></td>';
+                                }
+                            }
                             else if (status === 'canceled')
                                 rows += '<span class="tag is-danger">Canceled</span></td>';
                             else
@@ -78,3 +89,34 @@ $('#finished_orders').click(function () {
 
 });
 
+
+$('#checkout').click(function () {
+    $('#payment_error').hide();
+    const card = {
+        name: $('#card_name').val(),
+        number: $('#card_number').val(),
+        exp_month: $('#expiry_month').val(),
+        exp_year: $('#expiry_year').val(),
+        cvc: $('#cvv').val()
+    };
+
+    Stripe.createToken(card, function(status, r){
+        if (status === 200){
+            const pk = $('#order_pk').val();
+            const url = 'http://localhost:8000/order/' + pk + '/payment/';
+            const data = {
+                'stripe_id': r.id,
+                'total_price': $('#total_price').text()
+            };
+            axios
+                .post(url, data)
+                .then(r => {
+                    $('#modal_payment').hide();
+                    $('#modal_order_complete').show();
+                })
+        }
+        else
+            $('#payment_error').show('slow');
+    });
+
+});
