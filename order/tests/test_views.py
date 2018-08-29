@@ -104,7 +104,8 @@ def test_get_pending_orders(test_user):
     car = Car.objects.create(name='test_car', model_year='2014',
                              price_hourly=10)
     order = Order.objects.create(end_date='2018-09-09', car=car,
-                                 user=test_user)
+                                 user=test_user, approved=False, canceled=False,
+                                 finished=False, paid=False)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -117,7 +118,8 @@ def test_get_active_orders(test_user):
     car = Car.objects.create(name='test_car', model_year='2014',
                              price_hourly=10)
     order = Order.objects.create(end_date='2018-09-09', car=car,
-                                 user=test_user, approved=True)
+                                 user=test_user, approved=True, canceled=False,
+                                 finished=False, paid=False)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -130,8 +132,8 @@ def test_get_finished_orders(test_user):
     car = Car.objects.create(name='test_car', model_year='2014',
                              price_hourly=10)
     order = Order.objects.create(end_date='2018-09-09', car=car,
-                                 user=test_user, approved=True,
-                                 finished=True)
+                                 user=test_user, approved=True, paid=True,
+                                 finished=True, canceled=False)
     token = Token.objects.create(user=test_user)
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
@@ -152,7 +154,6 @@ def test_cancel_order(test_user):
     r = client.put(url)
     assert r.status_code == 200
     assert r.json().get('canceled')
-
 
 
 

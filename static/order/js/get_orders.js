@@ -45,7 +45,7 @@ function get_orders(url, status){
                                     $('#th_payment').show();
                                     rows += '<span class="tag is-link" id="td_active">Active</span></td><td><a href="#" ' +
                                         'onclick="$(\'#modal_payment\').show(\'slow\');" id="td_payment">' +
-                                        '<span class="tag is-success">Go to Payment</span></a></td>';
+                                        '<span class="tag is-success">Pay via Card</span></a></td>';
                                 }
                             }
                             else if (status === 'canceled')

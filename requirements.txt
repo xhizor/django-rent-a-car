@@ -1,3 +1,5 @@
+celery==3.1.25
+flower
 django-bulma
 django-cors-headers
 django-debug-toolbar

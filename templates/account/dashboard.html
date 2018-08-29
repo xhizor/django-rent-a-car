@@ -117,7 +117,7 @@
              <div class="card">
                 <div class="card-content">
                     <div class="control">
-                        <img src="/static/order/img/cards.png" style="margin-left: 50%;">
+                        <img src="/static/order/img/cards.png" style="margin-left: 40%;">
                         <br><br>
                         <input type="hidden" id="order_pk">
                         <label class="label"> Name on card: </label>
@@ -125,7 +125,7 @@
                         <label class="label"> Card number: </label>
                         <input type="text" id="card_number" autocomplete="off" maxlength="19" class="input"><br><br>
                         <label class="label"> Expiration month: </label>
-                         <div class="select">
+                         <div class="select is-success">
                         <select id="expiry_month">
                             <option value="">--Month--</option>
                              {% for month in months %}
@@ -135,7 +135,7 @@
                         </div>
                         <br><br>
                         <label class="label"> Expiration year: </label>
-                        <div class="select">
+                        <div class="select is-success">
                         <select id="expiry_year">
                             <option value="">--Year--</option>
                             {% for year in years %}

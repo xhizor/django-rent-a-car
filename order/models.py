@@ -38,7 +38,15 @@ class Order(models.Model):
         db_table = 'order'
 
     def __str__(self):
-        return f'{self.user} rent a {self.car}, {self.start_date} - {self.end_date}'
+        status = 'Pending'
+        if not self.approved and not self.paid and not self.finished and self.canceled:
+            status = 'Canceled'
+        elif (self.approved and not self.paid and not self.finished and not self.canceled) or \
+             (self.approved and self.paid and not self.finished and not self.canceled):
+            status = 'Active'
+        elif self.approved and self.paid and self.finished and not self.canceled:
+            status = 'Finished'
+        return f'{self.user} rent a {self.car}, {self.start_date} - {self.end_date}, {status}'
 
 
 
