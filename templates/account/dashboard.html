@@ -40,12 +40,16 @@
 </div>
 <div class="column is-2"></div>
 <div class="column is-3">
+    <br>
+    <!-- No Orders message -->
     <article class="message is-danger" style="display:none;" id="not_found">
                                 <div class="message-body">
                                      No Orders where found. Click <a href="{% url 'car:view_cars' %}"
                                      style="text-decoration:none; color:blue">here</a> to make an order!
                                 </div>
                              </article>
+
+    <!-- Update profile -->
     <a class="fillForm"><span class="tag is-link">Update your profile</span></a><br><br>
     <div class="box" style="display:none;">
         <form>
@@ -124,8 +128,8 @@
                         <input type="text" id="card_name" autofocus class="input"><br><br>
                         <label class="label"> Card number: </label>
                         <input type="text" id="card_number" autocomplete="off" maxlength="19" class="input"><br><br>
-                        <label class="label"> Expiration month: </label>
-                         <div class="select is-success">
+                        <label class="label"> Expiry month: </label>
+                         <div class="select is-primary">
                         <select id="expiry_month">
                             <option value="">--Month--</option>
                              {% for month in months %}
@@ -134,8 +138,8 @@
                         </select>
                         </div>
                         <br><br>
-                        <label class="label"> Expiration year: </label>
-                        <div class="select is-success">
+                        <label class="label"> Expiry year: </label>
+                        <div class="select is-primary">
                         <select id="expiry_year">
                             <option value="">--Year--</option>
                             {% for year in years %}
@@ -169,7 +173,7 @@
                 <div class="card-content">
                     Congratulations! Your payment has been processed successfully.<br>
                     Click <a href="{% url 'account:dashboard' %}"><span class="tag is-link">here</span></a>
-                    to view active orders.
+                    to view your paid orders.
         </div>
         </div>
         </div>

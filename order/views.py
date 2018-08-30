@@ -1,4 +1,3 @@
-from io import BytesIO
 from json import loads
 import stripe
 from decouple import config
@@ -7,15 +6,15 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.utils import timezone
 from django.utils.html import format_html
 from rest_framework.generics import CreateAPIView, get_object_or_404, ListAPIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .task import order_created, send_pdf_to_email
+from .task import send_pdf_to_email, send_order_status_to_email
 from .models import Car, Coupon, Order
 from .serializers import OrderSerializer
+from django.utils import timezone
 
 
 class CheckCouponAPIView(APIView):
@@ -76,6 +75,7 @@ class CancelOrderAPIView(APIView):
         order = get_object_or_404(Order, pk=pk)
         order.canceled = True
         order.save()
+        send_order_status_to_email(pk, status='canceled')
         messages.info(self.request,
                       format_html('{} cancel the Order <a href="{}">{}</a>',
                                   self.request.user.get_full_name(),
@@ -85,7 +85,7 @@ class CancelOrderAPIView(APIView):
 
 
 class StripePaymentAPIVIew(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     stripe.api_key = config('STRIPE_SECRET_KEY')
 
     def post(self, request, pk):
@@ -103,7 +103,7 @@ class StripePaymentAPIVIew(APIView):
                                       f'http://localhost:8000/admin/order/order/{order.pk}',
                                       f'#{order.pk}'))
 
-            order_created.delay(pk)
+            send_order_status_to_email.delay(pk, status='paid')
             return Response()
         except Exception:
             return Response(status=HTTP_400_BAD_REQUEST)

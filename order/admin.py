@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from django.utils.html import format_html
 from .models import Order, Coupon
-
+from order.task import send_order_status_to_email
 
 @admin.register(Coupon)
 class ModelAdmin(admin.ModelAdmin):
@@ -19,6 +21,20 @@ def approve_order(modeladmin, request, queryset):
     approve_order.short_description = 'Approve order'
 
 
+def finish_order(modeladmin, request, queryset):
+    order_end_date = parse_datetime(queryset[0].end_date)
+    is_paid = queryset[0].paid
+    now = timezone.now()
+    if is_paid and now >= order_end_date:
+        queryset.update(finished=True)
+        car = queryset[0].car
+        car.available = True
+        car.save()
+        pk = queryset[0].pk
+        send_order_status_to_email.delay(pk, status='finished')
+    finish_order.short_description = 'Finish order'
+
+
 @admin.register(Order)
 class ModelAdmin(admin.ModelAdmin):
     def send_pdf_order_detail_to_email(self, order):
@@ -32,5 +48,5 @@ class ModelAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'car__model__name', 'car__name')
     list_filter = ('approved', 'canceled', 'finished')
     list_editable = ('approved', 'canceled', 'finished', 'paid')
-    actions = (approve_order,)
+    actions = (approve_order, finish_order)
 

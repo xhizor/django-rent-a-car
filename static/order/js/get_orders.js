@@ -74,7 +74,6 @@ $('#pending_orders').click(function () {
 $('#active_orders').click(function () {
         const url = 'http://localhost:8000/order/get-orders/?active=True';
         get_orders(url, 'active');
-
 });
 
 $('#canceled_orders').click(function () {
@@ -120,3 +119,4 @@ $('#checkout').click(function () {
     });
 
 });
+
