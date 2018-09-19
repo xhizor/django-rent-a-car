@@ -2,4 +2,3 @@
 <a href="{% url 'car:view_cars' %}"  class="navbar-item {% if 'car' in request.path %} is-active {% endif %}"> View Cars </a>
 <a href="{% url 'account:login' %}" class="navbar-item {% if 'login' in request.path %} is-active {% endif %}"> Login </a>
 <a href="{% url 'account:register' %}" class="navbar-item {% if 'register' in request.path %} is-active {% endif %}"> Register </a>
-<a href="#" class="navbar-item {% if 'contact' in request.path %} is-active {% endif %}"> Contact </a>

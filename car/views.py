@@ -9,14 +9,14 @@ from .models import Car, Gallery, Model
 from .serializers import CarSerializer, GallerySerializer
 
 
-class CarViewset(ReadOnlyModelViewSet):
+class CarViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = CarSerializer
     queryset = Car.objects.all()
     filter_backends = (SearchFilter,)
     search_fields = ('^name', '^model__name')
 
-    def get_queryset(self):  # Get Car QuerySet - filtering based on QueryString params
+    def get_queryset(self):
         if 'year_from' in self.request.query_params:
             year_from = self.request.query_params.get('year_from')
             year_to = self.request.query_params.get('year_to')
@@ -41,6 +41,8 @@ class CarViewset(ReadOnlyModelViewSet):
                                 .filter(engine__fuel_type__name__exact=fuel_type)
         return self.queryset.filter(available=True)
 
+
+
     @action(methods=['get'], detail=True)
     def gallery(self, request, pk):
         car = self.get_object()
@@ -49,7 +51,7 @@ class CarViewset(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
-class ViewCarsAPIView(APIView):
+class GetCarsView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'car/view_cars.html'
@@ -59,7 +61,7 @@ class ViewCarsAPIView(APIView):
         return Response({'brands': brands})
 
 
-class GetCarInfoAPIView(APIView):
+class GetCarInfoView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'car/get_car_info.html'

@@ -1,3 +1,4 @@
+from win10toast import ToastNotifier
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import timezone
@@ -5,6 +6,7 @@ from django.utils.dateparse import parse_datetime
 from django.utils.html import format_html
 from .models import Order, Coupon
 from order.task import send_order_status_to_email
+
 
 @admin.register(Coupon)
 class ModelAdmin(admin.ModelAdmin):
@@ -32,6 +34,9 @@ def finish_order(modeladmin, request, queryset):
         car.save()
         pk = queryset[0].pk
         send_order_status_to_email.delay(pk, status='finished')
+    else:
+        toaster = ToastNotifier()
+        toaster.show_toast('Error Notification!', "You can't finish this Order yet", duration=5)
     finish_order.short_description = 'Finish order'
 
 
@@ -49,4 +54,5 @@ class ModelAdmin(admin.ModelAdmin):
     list_filter = ('approved', 'canceled', 'finished')
     list_editable = ('approved', 'canceled', 'finished', 'paid')
     actions = (approve_order, finish_order)
+
 

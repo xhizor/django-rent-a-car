@@ -1,14 +1,14 @@
 from django.urls import path
-from order.views import CreateOrderAPIView, CheckCouponAPIView, admin_send_pdf_order_detail_to_email, \
-    GetOrdersAPIView, CancelOrderAPIView, StripePaymentAPIVIew
+from order.views import CreateOrderView, CheckCouponView, admin_send_pdf_order_detail_to_email, \
+    GetOrdersView, CancelOrderAPIView, StripePaymentView
 
 app_name = 'order'
 
 urlpatterns = [
-    path('create/', CreateOrderAPIView.as_view(), name='create'),
-    path('check-coupon/', CheckCouponAPIView.as_view(), name='check_coupon'),
+    path('create/', CreateOrderView.as_view(), name='create'),
+    path('check-coupon/', CheckCouponView.as_view(), name='check_coupon'),
     path('admin/order/<int:pk>/send-pdf/', admin_send_pdf_order_detail_to_email, name='send_pdf_to_email'),
-    path('get-orders/', GetOrdersAPIView.as_view(), name='get_orders'),
+    path('get-orders/', GetOrdersView.as_view(), name='get_orders'),
     path('<int:pk>/cancel/', CancelOrderAPIView.as_view(), name='cancel_order'),
-    path('<int:pk>/payment/', StripePaymentAPIVIew.as_view(), name='payment'),
+    path('<int:pk>/payment/', StripePaymentView.as_view(), name='payment'),
 ]

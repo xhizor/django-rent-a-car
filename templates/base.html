@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock title %}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <link rel="shortcut icon" href="{% static 'favicon.png' %}" type="image/x-icon">
     <style>
         body{
             background: rgb(250, 250, 250);
@@ -18,7 +19,7 @@
 <nav class="navbar is-light">
     <div class="navbar-brand">
         <a href="#" class="navbar-item">
-         <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+            <img src="https://bulma.io/images/made-with-bulma--dark.png" alt="">
         </a>
         <div class="navbar-burger burger" data-target="navMenu">
             <span></span>
@@ -44,14 +45,13 @@
 <footer class="footer" style="background: powderblue;">
     <div class="container">
         <div class="content has-text-centered">
-            <p><i>&copy; 2018 Rent-a-car — Coded by Mateo Mlikota.</i></p><br>
+            <p><i>&copy; 2018 Rent-a-car — Coded by Mateo Mlikota @xhizor.</i></p><br>
          </div>
     </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
 <script src="{% static 'account/js/dashboard.js' %}"></script>

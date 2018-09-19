@@ -18,6 +18,7 @@ function get_orders(url, status){
     axios
             .get(url)
             .then(r => {
+                $('div.box').hide();
                 $('#not_found').hide();
                 $('a.fillForm').hide();
                 $('#order_data').hide();
@@ -50,8 +51,12 @@ function get_orders(url, status){
                             }
                             else if (status === 'canceled')
                                 rows += '<span class="tag is-danger">Canceled</span></td>';
-                            else
-                                rows += '<span class="tag is-success">Finished</span></td>';
+                            else {
+                                $('#th_payment').show();
+                                rows += '<span class="tag is-success">Finished</span></td><td><a href="#" ' +
+                                    'onclick="$(\'#modal_car_review\').show(\'slow\');"><span class="tag is-primary">' +
+                                    'Rate the car</span></a></td>';
+                            }
                         rows += '</tr>';
 
                     });

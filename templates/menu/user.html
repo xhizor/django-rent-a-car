@@ -1,7 +1,5 @@
 <a href="#" class="navbar-item {% if 'dashboard' in request.path %} is-active {% endif %}" id="dashboard"> Dashboard </a>
 <a href="{% url 'car:view_cars' %}" class="navbar-item {% if 'car' in request.path %} is-active {% endif %}"> View Cars </a>
-<a href="#" class="navbar-item"> News </a>
-<a href="#" class="navbar-item"> Contact </a>
 {% if user.is_authenticated %}
     <a href="{% url 'account:logout' %}" class="navbar-item"> Logout </a>
 {% else %}

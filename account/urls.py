@@ -16,3 +16,6 @@ urlpatterns = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     path('dashboard/update/', UserProfileUpdateView.as_view(), name='update')
 ]
+
+
+

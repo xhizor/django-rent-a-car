@@ -15,9 +15,6 @@
                                   class="is-active" {% endif %}>Dashboard</a></li>
   </ul>
     <ul class="menu-list">
-        <li><a>Car reviews</a></li>
-    </ul>
-    <ul class="menu-list">
     <li>
       <a href="#" id="pending_orders" {% if 'orders' in request.path %} class="is-active" {% endif %}>Orders</a>
       <ul>
@@ -26,13 +23,6 @@
         <li><a href="#" id="finished_orders">Finished</a></li>
       </ul>
     </li>
-  </ul>
-      <ul class="menu-list">
-     <li>
-      <a {% if 'tickets' in request.path %} class="is-active" {% endif %}>Tickets</a>
-      <ul class="menu-list">
-        <li><a>Open</a></li>
-        <li><a>Closed</a></li>
   </ul>
   </li>
       </ul>
@@ -49,7 +39,7 @@
                                 </div>
                              </article>
 
-    <!-- Update profile -->
+    <!-- Update profile form -->
     <a class="fillForm"><span class="tag is-link">Update your profile</span></a><br><br>
     <div class="box" style="display:none;">
         <form>
@@ -94,7 +84,7 @@
 </div>
 <div class="columns">
     <div class="column is-4"></div>
-    <div class="column" id="order_data" style="display:none; margin-top: -20%;">
+    <div class="column" id="order_data" style="display:none; margin-top:-12%;">
         <table class="table is-hoverable is-striped">
             <thead>
                 <tr>
@@ -114,7 +104,7 @@
     </div>
 </div>
 
- <!-- Checkout modal -->
+ <!-- Checkout order modal -->
         <div class="modal is-active" id="modal_payment" style="display:none;">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -165,7 +155,7 @@
         </div>
 
 
-     <!-- Order complete -->
+     <!-- Order complete modal -->
      <div class="modal is-active" id="modal_order_complete" style="display:none;">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -180,10 +170,26 @@
          <button class="modal-close is-medium" id="btn_modal_order_complete"></button>
         </div>
 
-<div style="margin-top: 17%"></div>
+        <!-- Car review modal -->
+     <div class="modal is-active" id="modal_car_review" style="display:none;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+             <div class="card">
+                <div class="card-content">
+                <label class="label"> Car: </label>
+                <input type="text" id="car" autofocus class="input"><br><br>
+                <label class="label"> Rate: </label>
+
+        </div>
+        </div>
+        </div>
+         <button class="modal-close is-medium" id="btn_modal_car_review"></button>
+        </div>
+
+<div style="margin-top: 30%"></div>
 </div>
     {% block script %}
-        <script src="{% static 'account/js/modal.js' %}"></script>
+        <script src="{% static 'modal.js' %}"></script>
         <script src="https://js.stripe.com/v2"></script>
         <script> Stripe.publishableKey = '{{ pub_key }}' </script>
         <script src="{% static 'order/js/get_orders.js' %}"></script>

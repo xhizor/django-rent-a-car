@@ -1,7 +1,9 @@
 from json import loads
 import stripe
 from decouple import config
+from win10toast import ToastNotifier
 from django.db.models import Q
+from django.utils import timezone
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
@@ -14,10 +16,9 @@ from rest_framework.views import APIView
 from .task import send_pdf_to_email, send_order_status_to_email
 from .models import Car, Coupon, Order
 from .serializers import OrderSerializer
-from django.utils import timezone
 
 
-class CheckCouponAPIView(APIView):
+class CheckCouponView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -34,7 +35,7 @@ class CheckCouponAPIView(APIView):
             return Response({'status': 'invalid'})
 
 
-class CreateOrderAPIView(CreateAPIView):
+class CreateOrderView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = OrderSerializer
 
@@ -46,9 +47,11 @@ class CreateOrderAPIView(CreateAPIView):
                       format_html('New order from {}! <br> Click <a href="{}"> here </a> to view order.',
                                   self.request.user.get_full_name(), 'http://localhost:8000/admin/order/order/' +
                                   str(serializer.data.get('id')) + '/change/'))
+        toaster = ToastNotifier()
+        toaster.show_toast('New Order Notification!', f'You ordered a new car', duration=3)
 
 
-class GetOrdersAPIView(ListAPIView):
+class GetOrdersView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
@@ -84,7 +87,7 @@ class CancelOrderAPIView(APIView):
         return Response({'canceled': True})
 
 
-class StripePaymentAPIVIew(APIView):
+class StripePaymentView(APIView):
     permission_classes = (IsAuthenticated,)
     stripe.api_key = config('STRIPE_SECRET_KEY')
 
@@ -102,7 +105,6 @@ class StripePaymentAPIVIew(APIView):
                                       order.user.get_full_name(),
                                       f'http://localhost:8000/admin/order/order/{order.pk}',
                                       f'#{order.pk}'))
-
             send_order_status_to_email.delay(pk, status='paid')
             return Response()
         except Exception:

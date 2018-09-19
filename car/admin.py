@@ -14,12 +14,6 @@ class EngineAdmin(admin.ModelAdmin):
     list_filter = ('name', 'consumation')
 
 
-@admin.register(models.Model)
-class ModelAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-
-
 @admin.register(models.AditionalEquipment)
 class ModelAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -32,6 +26,7 @@ class CarAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_editable = ('price_hourly', 'available')
     list_filter = ('available', 'rate')
+    list_select_related = ('model', 'engine')
 
     def model(self, obj):
         return obj.model
@@ -43,6 +38,7 @@ class CarAdmin(admin.ModelAdmin):
 @admin.register(models.Gallery)
 class GalleryAdmin(admin.ModelAdmin):
     list_display = ('photo', 'car')
+    list_select_related = ('car',)
 
     def car(self, obj):
         return obj.car

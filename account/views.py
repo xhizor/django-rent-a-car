@@ -13,9 +13,6 @@ from .serializers import UserSerializer, UserProfileSerializer
 
 
 class HomeView(APIView):
-    """
-    Home Page Template API View (GET).
-    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/home.html'
     permission_classes = (IsAuthenticatedOrReadOnly,)
@@ -25,9 +22,6 @@ class HomeView(APIView):
 
 
 class LoginView(APIView):
-    """
-    Login Page Template API View (GET).
-    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/login.html'
     permission_classes = [AllowAny]
@@ -37,10 +31,6 @@ class LoginView(APIView):
 
 
 class CreateUserView(APIView):
-    """
-    API View for creating a new user (GET, POST)
-    Redirect to Login View after successful registration.
-    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/register.html'
     permission_classes = [AllowAny]
@@ -57,9 +47,6 @@ class CreateUserView(APIView):
 
 
 class DashboardView(APIView):
-    """
-    User Dashboard Page Template API View (GET).
-    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'account/dashboard.html'
     permission_classes = (IsAuthenticatedOrReadOnly,)
@@ -84,7 +71,7 @@ class AuthUserView(APIView):
     serializer_class = UserSerializer
 
     def get(self, request):
-        serializer = UserSerializer(request.user)
+        serializer = UserSerializer(instance=request.user)
         return Response(serializer.data)
 
 
@@ -99,13 +86,10 @@ class AuthUserProfileViewSet(viewsets.ModelViewSet):
 
 
 class LogoutView(APIView):
-    """
-    Logout View for Github Auth User.
-    """
-
     def get(self, request):
         logout(request)
         return redirect('home')
+
 
 
 

@@ -1,10 +1,10 @@
 from io import BytesIO
-
 from django.conf import settings
 from django.core.mail import EmailMessage
 from celery import task
 from django.template.loader import render_to_string
 from weasyprint import HTML
+from win10toast import ToastNotifier
 from .models import Order
 
 
@@ -13,12 +13,17 @@ def send_order_status_to_email(pk, status):
     try:
         order = Order.objects.get(pk=pk)
         subject = 'Rent-a-car Order detail'
+        toaster = ToastNotifier()
         if status == 'paid':
-            message = f'Your Order #{order.pk} is successfully paid. Enjoy driving & Good luck!'
+            message = f'Your Order #{order.pk} is successfully paid. Enjoy driving & good luck!'
+            toaster.show_toast('Paid Order Notification!',
+                               f'You paid the Order #{order.pk}', duration=3)
         elif status == 'finished':
-            message = f'Your Order #{order.pk} is finished. Big thanks for using our Rent-a-car service!'
+            message = f'Your Order #{order.pk} is finished. Thank you for using our Rent-a-car service!'
         else:
-            message = f'Your Order #{order.pk} is canceled. Best regards fro our team!'
+            message = f'Your Order #{order.pk} is canceled. Best regards from our team!'
+            toaster.show_toast('Canceled Order Notification!',
+                               f'You have canceled the Order #{order.pk}', duration=3)
 
         email = EmailMessage(subject, message, settings.EMAIL_HOST_USER, [order.user.email])
         email.send()

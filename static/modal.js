@@ -4,7 +4,7 @@ $(document).keyup(function(e){
         $('#btn_modal_order').click();
         $('#btn_modal_payment').click();
         $('#btn_modal_order_complete').click();
-
+        $('#btn_modal_car_review').click();
     }
 });
 
@@ -22,6 +22,10 @@ $('#btn_modal_payment').click(function () {
 
 $('#btn_modal_order_complete').click(function () {
    $('#modal_order_complete').fadeOut('slow');
+});
+
+$('#btn_modal_car_review').click(function () {
+   $('#modal_car_review').fadeOut('slow');
 });
 
 
