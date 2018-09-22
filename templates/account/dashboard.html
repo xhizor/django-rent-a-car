@@ -177,9 +177,20 @@
              <div class="card">
                 <div class="card-content">
                 <label class="label"> Car: </label>
-                <input type="text" id="car" autofocus class="input"><br><br>
+                <input type="text"  id="car" class="input"><br><br>
+                <input id="order_rate_id" type="hidden">
                 <label class="label"> Rate: </label>
-
+               <div class="select is-info">
+                <select id="rate">
+                    <option value="">--Choose rate--</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+               </div><br><br>
+               <a class="button is-success" id="car_rate"> Rate the car</a><br><br>
         </div>
         </div>
         </div>
@@ -193,6 +204,7 @@
         <script src="https://js.stripe.com/v2"></script>
         <script> Stripe.publishableKey = '{{ pub_key }}' </script>
         <script src="{% static 'order/js/get_orders.js' %}"></script>
+        <script src="{% static 'order/js/rate_car.js' %}"></script>
     {% endblock script %}
 {% endblock content %}
 

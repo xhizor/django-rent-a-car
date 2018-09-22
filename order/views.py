@@ -2,7 +2,7 @@ from json import loads
 import stripe
 from decouple import config
 from win10toast import ToastNotifier
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.utils import timezone
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from django.contrib.admin.views.decorators import staff_member_required
@@ -71,20 +71,21 @@ class GetOrdersView(ListAPIView):
             .filter(approved=False, canceled=False, finished=False, paid=False, user=self.request.user)
 
 
-class CancelOrderAPIView(APIView):
+class CancelOrderView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def put(self, request, pk):
         order = get_object_or_404(Order, pk=pk)
         order.canceled = True
         order.save()
-        send_order_status_to_email(pk, status='canceled')
         messages.info(self.request,
                       format_html('{} cancel the Order <a href="{}">{}</a>',
                                   self.request.user.get_full_name(),
                                   f'http://localhost:8000/admin/order/order/{order.pk}',
                                   f'#{order.pk}'))
+        send_order_status_to_email.delay(pk, status='canceled')
         return Response({'canceled': True})
+
 
 
 class StripePaymentView(APIView):
@@ -109,6 +110,25 @@ class StripePaymentView(APIView):
             return Response()
         except Exception:
             return Response(status=HTTP_400_BAD_REQUEST)
+
+
+class RateCarView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def put(self, request, pk):
+        rate = loads(request.body.decode('utf-8')).get('rate')
+        order = get_object_or_404(Order, pk=pk)
+        order.rate = rate
+        order.save()
+        car = Car.objects.get(pk=order.car.pk)
+        car.rate = round(car.orders.aggregate(rate=Avg('rate')).get('rate'), 2)
+        car.save()
+        messages.info(self.request,
+                      format_html('{} rated the Car in Order <a href="{}">{}</a>',
+                                  self.request.user.get_full_name(),
+                                  f'http://localhost:8000/admin/order/order/{order.pk}',
+                                  f'#{order.pk}'))
+        return Response({'rated': True})
 
 
 @staff_member_required

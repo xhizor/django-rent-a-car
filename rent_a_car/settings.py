@@ -160,9 +160,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    'static',
-)
+STATICFILES_DIRS = ('static',)
 
 # Django Debug Toolbar Configuration
 

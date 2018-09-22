@@ -1,5 +1,6 @@
 from datetime import timedelta
 import pytest
+from django.db.models import Avg
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
@@ -154,6 +155,23 @@ def test_cancel_order(test_user):
     r = client.put(url)
     assert r.status_code == 200
     assert r.json().get('canceled')
+
+
+def test_rate_car(test_user):
+    car = Car.objects.create(name='test_car', model_year='2014',
+                             price_hourly=10)
+    order = Order.objects.create(end_date='2018-09-09', car=car,
+                                 user=test_user, approved=True, paid=True)
+    token = Token.objects.create(user=test_user)
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+    url = reverse('order:rate_car', kwargs={'pk': order.pk})
+    data = {'rate': 5}
+    r = client.put(url, data=data, format='json')
+    assert r.status_code == 200
+    assert r.json().get('rated')
+    assert car.orders.aggregate(rate=Avg('rate')).get('rate') == 5
+
 
 
 

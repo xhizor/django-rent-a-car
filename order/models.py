@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
 from django.utils.crypto import get_random_string
 from car.models import Car
 
@@ -26,10 +25,10 @@ class Order(models.Model):
     end_date = models.CharField(max_length=20)
     approved = models.BooleanField(default=False)
     finished = models.BooleanField(default=False)
+    canceled = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
     total_price = models.FloatField(null=True, blank=True)
-    comment = models.CharField(max_length=100, null=True, blank=True)
-    canceled = models.BooleanField(default=False)
+    rate = models.IntegerField(default=0)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='orders')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='orders')

@@ -27,7 +27,7 @@ function get_orders(url, status){
                 let rows = '';
                 if (Object.keys(orders).length) {
                     $.each(orders, function (key, val) {
-                        rows += '<tr><td>' + val.id + '</td><td>' +
+                        rows += '<tr><td id="order_id">' + val.id + '</td><td id="car_name">' +
                             val.car.model.name + ' ' + val.car.name + '</td><td>$<span id="total_price">' +
                             val.total_price + '</span></td><td>' + val.start_date + '</td><td>' +
                             val.end_date + '</td><td>';
@@ -54,7 +54,7 @@ function get_orders(url, status){
                             else {
                                 $('#th_payment').show();
                                 rows += '<span class="tag is-success">Finished</span></td><td><a href="#" ' +
-                                    'onclick="$(\'#modal_car_review\').show(\'slow\');"><span class="tag is-primary">' +
+                                    'onclick="$(\'#modal_car_review\').show(\'slow\');"><span id="rate_car_lbl" class="tag is-primary">' +
                                     'Rate the car</span></a></td>';
                             }
                         rows += '</tr>';
@@ -63,6 +63,8 @@ function get_orders(url, status){
 
                     $('#order_data').show();
                     $('#rows').append(rows);
+                    $('#car').val($('#car_name').text()).attr('disabled', 'disabled');
+                    $('#order_rate_id').val($('#order_id').text());
                 }
                 else
                     $('#not_found').show();

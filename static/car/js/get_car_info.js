@@ -21,13 +21,13 @@ $('#get_car_info').click(function () {
            let img = ''; // rate stars image
            if (!car.rate)
                img = '<img src="/static/car/img/0-star.png" height="150" width="150">';
-           else if(car.rate === 1)
+           else if(Math.round(car.rate) === 1)
                img = '<img src="/static/car/img/1-star.png" height="150" width="150">';
-           else if(car.rate === 2)
+           else if(Math.round(car.rate) === 2)
                img = '<img src="/static/car/img/2-star.png" height="150" width="150">';
-           else if(car.rate === 3)
+           else if(Math.round(car.rate) === 3)
                img = '<img src="/static/car/img/3-star.png" height="150" width="150">';
-           else if(car.rate === 4)
+           else if(Math.round(car.rate) === 4)
                img = '<img src="/static/car/img/4-star.png" height="150" width="150">';
            else
                img = '<img src="/static/car/img/5-star.png" height="150" width="150">';

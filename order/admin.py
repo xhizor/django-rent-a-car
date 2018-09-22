@@ -9,7 +9,7 @@ from order.task import send_order_status_to_email
 
 
 @admin.register(Coupon)
-class ModelAdmin(admin.ModelAdmin):
+class CouponModelAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount', 'expired')
     list_filter = ('expired',)
     list_editable = ('discount', 'expired')
@@ -41,7 +41,7 @@ def finish_order(modeladmin, request, queryset):
 
 
 @admin.register(Order)
-class ModelAdmin(admin.ModelAdmin):
+class OrderModelAdmin(admin.ModelAdmin):
     def send_pdf_order_detail_to_email(self, order):
         return format_html('<a href="{}" onclick="return confirm(\'Are you sure?\')">Send Email</a>',
                            reverse('order:send_pdf_to_email', kwargs={'pk': order.pk}))
@@ -49,9 +49,9 @@ class ModelAdmin(admin.ModelAdmin):
     send_pdf_order_detail_to_email.short_description = 'Send PDF Order detail to email'
 
     list_display = ('start_date', 'end_date', 'user', 'car', 'approved', 'canceled',
-                    'finished', 'paid', 'send_pdf_order_detail_to_email')
+                    'finished', 'paid', 'rate', 'send_pdf_order_detail_to_email')
     search_fields = ('user__username', 'car__model__name', 'car__name')
-    list_filter = ('approved', 'canceled', 'finished')
+    list_filter = ('approved', 'canceled', 'finished', 'rate')
     list_editable = ('approved', 'canceled', 'finished', 'paid')
     actions = (approve_order, finish_order)
 
