@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% spaceless %}
 {% load staticfiles %}
+{% load compress %}
 {% block title %} View Car Info — Rent-a-car {% endblock title %}
 {% block menu %}
     {% include 'menu/home.html' %}
@@ -76,10 +78,13 @@
 <section class="section">
     <div class="gallery"></div>
 </section>
-    {% block script %}
-        <script src="{% static 'car/js/image_slider.js' %}"></script>
-        <script src="{% static 'car/js/get_car_info.js' %}"></script>
-        <script src="{% static 'modal.js' %}"></script>
-        <script src="{% static 'order/js/proceed_order.js' %}"></script>
-    {% endblock script %}
+    {% compress js %}
+        {% block script %}
+            <script src="{% static 'car/js/image_slider.js' %}"></script>
+            <script src="{% static 'car/js/get_car_info.js' %}"></script>
+            <script src="{% static 'modal.js' %}"></script>
+            <script src="{% static 'order/js/proceed_order.js' %}"></script>
+        {% endblock script %}
+    {% endcompress %}
 {% endblock content %}
+{% endspaceless %}

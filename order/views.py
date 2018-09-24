@@ -87,7 +87,6 @@ class CancelOrderView(APIView):
         return Response({'canceled': True})
 
 
-
 class StripePaymentView(APIView):
     permission_classes = (IsAuthenticated,)
     stripe.api_key = config('STRIPE_SECRET_KEY')

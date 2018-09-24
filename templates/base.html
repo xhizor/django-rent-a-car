@@ -1,5 +1,6 @@
 {% load staticfiles %}
-
+{% load compress %}
+{% spaceless %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,6 @@
         </div>
     </div>
 </nav>
-
 {% block content %}
 
 {% endblock content %}
@@ -54,6 +54,7 @@
   crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+{% compress js %}
 <script src="{% static 'account/js/dashboard.js' %}"></script>
 <script src="{% static 'account/js/update_profile.js' %}"></script>
 <script src="{% static 'account/js/logout.js' %}"></script>
@@ -81,12 +82,13 @@
                 });
             });
         }
-
     });
 </script>
-
+{% endcompress %}
 {% block script %}
 
 {% endblock script %}
+
 </body>
 </html>
+{% endspaceless %}

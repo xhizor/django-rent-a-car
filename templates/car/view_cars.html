@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% spaceless %}
 {% load staticfiles %}
+{% load compress %}
 {% block title %} View Cars — Rent-a-car {% endblock title %}
 {% block menu %}
     {% include 'menu/home.html' %}
@@ -69,9 +71,12 @@
     </section>
             <div class="cars">
             </div>
-    {% block script %}
-        <script src="{% static 'car/js/view_cars.js' %}"></script>
-        <script src="{% static 'car/js/get_car_info.js' %}"></script>
-        <script src="{% static 'car/js/search_cars.js' %}"></script>
-    {% endblock script %}
-{% endblock content %}
+    {% compress js %}
+        {% block script %}
+            <script src="{% static 'car/js/view_cars.js' %}"></script>
+            <script src="{% static 'car/js/get_car_info.js' %}"></script>
+            <script src="{% static 'car/js/search_cars.js' %}"></script>
+        {% endblock script %}
+    {% endcompress %}
+  {% endblock content %}
+ {% endspaceless %}

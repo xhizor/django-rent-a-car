@@ -1,5 +1,7 @@
-{% extends "account/base.html" %}
+{% extends 'base.html' %}
+{% spaceless %}
 {% load staticfiles %}
+{% load compress %}
 {% load bulma_tags %}
 {% block title %} Dashboard — Rent-a-car {% endblock title %}
 {% block menu %}
@@ -200,11 +202,13 @@
 <div style="margin-top: 30%"></div>
 </div>
     {% block script %}
-        <script src="{% static 'modal.js' %}"></script>
         <script src="https://js.stripe.com/v2"></script>
-        <script> Stripe.publishableKey = '{{ pub_key }}' </script>
-        <script src="{% static 'order/js/get_orders.js' %}"></script>
-        <script src="{% static 'order/js/rate_car.js' %}"></script>
+        {% compress js %}
+            <script> Stripe.publishableKey = '{{ pub_key }}' </script>
+            <script src="{% static 'modal.js' %}"></script>
+            <script src="{% static 'order/js/get_orders.js' %}"></script>
+            <script src="{% static 'order/js/rate_car.js' %}"></script>
+        {% endcompress %}
     {% endblock script %}
 {% endblock content %}
-
+{% endspaceless %}

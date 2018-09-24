@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% spaceless %}
 {% load staticfiles %}
 {% block title %} Login — Rent-a-car {% endblock title %}
 {% block menu %}
@@ -55,3 +56,4 @@
     <script src="{% static 'modal.js' %}"></script>
     <script src="{% static 'account/js/login.js' %}"></script>
 {% endblock script %}
+{% endspaceless %}

@@ -1,6 +1,6 @@
 celery==3.1.25
-flower
 django-bulma
+django_compressor
 django-cors-headers
 django-debug-toolbar
 django-extensions

@@ -1,5 +1,5 @@
 from decouple import config
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
@@ -89,7 +89,6 @@ class LogoutView(APIView):
     def get(self, request):
         logout(request)
         return redirect('home')
-
 
 
 
