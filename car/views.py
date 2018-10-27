@@ -41,8 +41,6 @@ class CarViewSet(ReadOnlyModelViewSet):
                                 .filter(engine__fuel_type__name__exact=fuel_type)
         return self.queryset.filter(available=True)
 
-
-
     @action(methods=['get'], detail=True)
     def gallery(self, request, pk):
         car = self.get_object()

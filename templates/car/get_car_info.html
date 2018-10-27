@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% spaceless %}
 {% load staticfiles %}
-{% load compress %}
 {% block title %} View Car Info — Rent-a-car {% endblock title %}
 {% block menu %}
     {% include 'menu/home.html' %}
@@ -12,6 +11,7 @@
 
 {% block content %}
 <section class="section">
+    <a href="{% url 'car:view_cars' %}"><span class="tag is-link">Back</span></a>&nbsp;
     <a id="get_car_info" href="#"><span class="tag is-link">Get car info</span></a>
 </section>
     <section class="section" style="margin-left:38%;">
@@ -78,13 +78,11 @@
 <section class="section">
     <div class="gallery"></div>
 </section>
-    {% compress js %}
         {% block script %}
             <script src="{% static 'car/js/image_slider.js' %}"></script>
             <script src="{% static 'car/js/get_car_info.js' %}"></script>
             <script src="{% static 'modal.js' %}"></script>
             <script src="{% static 'order/js/proceed_order.js' %}"></script>
         {% endblock script %}
-    {% endcompress %}
 {% endblock content %}
 {% endspaceless %}

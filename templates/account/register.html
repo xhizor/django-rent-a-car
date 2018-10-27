@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% spaceless %}
 {% load staticfiles%}
+{% load compress %}
 {% load bulma_tags %}
 {% block title %} Register — Rent-a-car {% endblock title %}
 
@@ -55,6 +56,8 @@
 {% endblock content %}
 
 {% block script %}
+    {% compress js %}
     <script src="{% static 'modal.js' %}"></script>
+    {% endcompress %}
 {% endblock script %}
 {% endspaceless %}

@@ -72,7 +72,7 @@ $('#view_cars').click(function(){
             let counter = 0;
             let total_cars = Object.keys(r.data).length;
             $.each(r.data, function(key, val) {
-                    if (counter >= 3)
+                    if (counter >= 3 && !(counter % 3))
                         output += '</div>';
                     if (!(counter % 3))
                         output += '<div class=columns>';

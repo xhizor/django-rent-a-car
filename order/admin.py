@@ -36,7 +36,7 @@ def finish_order(modeladmin, request, queryset):
         send_order_status_to_email.delay(pk, status='finished')
     else:
         toaster = ToastNotifier()
-        toaster.show_toast('Error Notification!', "You can't finish this Order yet", duration=5)
+        toaster.show_toast('Error Notification!', "You can't finish this Order yet.", duration=3)
     finish_order.short_description = 'Finish order'
 
 

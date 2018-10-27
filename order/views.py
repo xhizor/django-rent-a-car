@@ -48,7 +48,7 @@ class CreateOrderView(CreateAPIView):
                                   self.request.user.get_full_name(), 'http://localhost:8000/admin/order/order/' +
                                   str(serializer.data.get('id')) + '/change/'))
         toaster = ToastNotifier()
-        toaster.show_toast('New Order Notification!', f'You ordered a new car', duration=3)
+        toaster.show_toast('New Order Notification!', f'You ordered a new car.', duration=3)
 
 
 class GetOrdersView(ListAPIView):
@@ -96,7 +96,7 @@ class StripePaymentView(APIView):
             stripe_id = loads(request.body.decode('utf-8')).get('stripe_id')
             total_price = loads(request.body.decode('utf-8')).get('total_price')
             stripe.Charge.create(amount=int(total_price), currency='USD',
-                                 description='Payment from Rent-a-car web site', card=stripe_id)
+                                 description='Payment from Rent-a-car web site.', card=stripe_id)
             order = Order.objects.get(pk=pk)
             order.paid = True
             order.save()

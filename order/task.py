@@ -20,6 +20,8 @@ def send_order_status_to_email(pk, status):
                                f'You paid the Order #{order.pk}', duration=3)
         elif status == 'finished':
             message = f'Your Order #{order.pk} is finished. Thank you for using our Rent-a-car service!'
+            toaster.show_toast('Finished Order Notification!',
+                               f'Your Order #{order.pk} is finished.', duration=3)
         else:
             message = f'Your Order #{order.pk} is canceled. Best regards from our team!'
             toaster.show_toast('Canceled Order Notification!',

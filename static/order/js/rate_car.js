@@ -8,6 +8,7 @@ $('#car_rate').click(function () {
         .put(url, data)
         .then(r => {
             if(r.data.rated)
+                alert('You rated the car successfully!');
                 location.reload();
         });
 });

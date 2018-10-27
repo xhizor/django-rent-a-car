@@ -4,12 +4,12 @@
 {% load compress %}
 {% block title %} View Cars — Rent-a-car {% endblock title %}
 {% block menu %}
-    {% include 'menu/home.html' %}
+    {% include 'menu/user.html' %}
 {% endblock menu %}
 {% block content %}
      {{ models }}
     <section class="section is-small">
-        <a id="view_cars" href="#" style="margin-left:20%"><span class="tag is-link">View all cars</span></a>
+        <a id="view_cars" href="#"><span class="tag is-link">View cars</span></a>
     </section>
     <section id="car_list" class="section is-small" style="display:none;">
     <div class="box" style="width: 60%; margin-left: 20%;">
@@ -71,12 +71,11 @@
     </section>
             <div class="cars">
             </div>
-    {% compress js %}
         {% block script %}
+             {% compress js %}
             <script src="{% static 'car/js/view_cars.js' %}"></script>
-            <script src="{% static 'car/js/get_car_info.js' %}"></script>
             <script src="{% static 'car/js/search_cars.js' %}"></script>
+            {% endcompress %}
         {% endblock script %}
-    {% endcompress %}
   {% endblock content %}
  {% endspaceless %}
